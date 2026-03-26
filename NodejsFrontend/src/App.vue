@@ -1,5 +1,29 @@
 <script setup>
+import { ref, computed } from 'vue'
 import { RouterLink, RouterView } from 'vue-router'
+
+const isLoggedIn = ref(false)
+const open = ref(false)
+
+const menuItems = computed(() =>
+  isLoggedIn.value
+    ? [
+        { label: '个人主页', to: '/profile' },
+        { label: '设置', to: '/settings' },
+      ]
+    : [
+        { label: '登录', to: '/login' },
+        { label: '注册', to: '/register' },
+      ]
+)
+
+const toggle = () => {
+  open.value = !open.value
+}
+
+const close = () => {
+  open.value = false
+}
 </script>
 
 <template>
@@ -10,17 +34,19 @@ import { RouterLink, RouterView } from 'vue-router'
       </RouterLink>
       <nav class="main-nav">
         <RouterLink to="/">首页</RouterLink>
-        <RouterLink to="/login">登录</RouterLink>
-        <RouterLink to="/register">注册</RouterLink>
-        <RouterLink to="/profile">用户资料</RouterLink>
-        <RouterLink to="/settings">设置</RouterLink>
-        <RouterLink to="/movie/dune">电影资料</RouterLink>
-        <RouterLink to="/actor/paul">演员资料</RouterLink>
-        <RouterLink to="/role/paul-atreides">角色资料</RouterLink>
       </nav>
       <div class="actions">
-        <RouterLink class="ghost-btn" to="/forgot-password">忘记密码</RouterLink>
-        <RouterLink class="primary-btn" to="/login">进入系统</RouterLink>
+        <div class="dropdown" @mouseleave="close">
+          <button class="dropdown-button" type="button" @click="toggle">
+            账号
+            <span class="caret">▾</span>
+          </button>
+          <div v-if="open" class="dropdown-menu">
+            <RouterLink v-for="item in menuItems" :key="item.to" :to="item.to" class="dropdown-item" @click="close">
+              {{ item.label }}
+            </RouterLink>
+          </div>
+        </div>
       </div>
     </header>
 
