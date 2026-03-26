@@ -1,11 +1,16 @@
 <script setup>
 import { ref } from 'vue'
 
+const createThumb = (label, color = '#334155') =>
+  `data:image/svg+xml,${encodeURIComponent(
+    `<svg xmlns='http://www.w3.org/2000/svg' width='140' height='180'><rect width='100%' height='100%' rx='14' fill='${color}'/><text x='50%' y='55%' dominant-baseline='middle' text-anchor='middle' fill='white' font-size='20' font-family='Inter, sans-serif'>${label}</text></svg>`
+  )}`
+
 const profile = ref({
   name: 'Echo',
   email: 'echo@example.com',
   gender: '女',
-  avatar: 'https://avatars.githubusercontent.com/u/1?v=4',
+  avatar: createThumb('E', '#7c3aed'),
   bio: '热爱科幻与悬疑，偏爱大卫·芬奇的作品。',
   city: '上海',
   signature: '“故事，就是人对抗时间的方式。”',
@@ -23,10 +28,34 @@ const watching = [
 ]
 
 const likedMovies = [
-  { title: '沙丘2', genre: '科幻', language: '英语', type: '电影' },
-  { title: '孤注一掷', genre: '犯罪', language: '国语', type: '电影' },
-  { title: '我的三体', genre: '科幻', language: '国语', type: '动漫' },
-  { title: '想见你', genre: '爱情', language: '国语', type: '电视剧' },
+  {
+    title: '沙丘2',
+    genre: '科幻',
+    language: '英语',
+    type: '电影',
+    image: createThumb('Dune 2', '#0ea5e9'),
+  },
+  {
+    title: '孤注一掷',
+    genre: '犯罪',
+    language: '国语',
+    type: '电影',
+    image: createThumb('孤注', '#1f2937'),
+  },
+  {
+    title: '我的三体',
+    genre: '科幻',
+    language: '国语',
+    type: '动漫',
+    image: createThumb('三体', '#475569'),
+  },
+  {
+    title: '想见你',
+    genre: '爱情',
+    language: '国语',
+    type: '电视剧',
+    image: createThumb('想见你', '#7c3aed'),
+  },
 ]
 
 const stats = {
@@ -46,9 +75,44 @@ const stats = {
   ],
 }
 
-const favoriteRoles = ['保罗·厄崔迪（沙丘）', '小丑（黑暗骑士）', '夏洛克（神探夏洛克）']
-const cosplayRoles = ['阿狸（英雄联盟）', '薇尔莉特（紫罗兰永恒花园）']
-const favoriteActors = ['蒂莫西·柴勒梅德', '赞达亚', '任素汐', '梁朝伟']
+const favoriteRoles = [
+  {
+    name: '保罗·厄崔迪',
+    from: '沙丘',
+    image: createThumb('Paul', '#0ea5e9'),
+  },
+  {
+    name: '小丑',
+    from: '黑暗骑士',
+    image: createThumb('Joker', '#7c3aed'),
+  },
+  {
+    name: '夏洛克',
+    from: '神探夏洛克',
+    image: createThumb('SH', '#334155'),
+  },
+]
+const cosplayRoles = [
+  {
+    name: '阿狸',
+    from: '英雄联盟',
+    image: createThumb('Ahri', '#f97316'),
+  },
+  {
+    name: '薇尔莉特',
+    from: '紫罗兰永恒花园',
+    image: createThumb('Violet', '#14b8a6'),
+  },
+]
+const favoriteActors = [
+  {
+    name: '蒂莫西·柴勒梅德',
+    image: createThumb('TC', '#7c3aed'),
+  },
+  { name: '赞达亚', image: createThumb('Zendaya', '#0ea5e9') },
+  { name: '任素汐', image: createThumb('任', '#1f2937') },
+  { name: '梁朝伟', image: createThumb('梁', '#475569') },
+]
 </script>
 
 <template>
@@ -108,20 +172,37 @@ const favoriteActors = ['蒂莫西·柴勒梅德', '赞达亚', '任素汐', '�
         <span class="pill-blue">实时同步</span>
       </header>
       <div class="mini-card">
-        <h4>收藏的演员 & 角色</h4>
-        <p class="muted">蒂莫西·柴勒梅德、玛格特·罗比、任素汐</p>
+        <h4>喜欢的演员</h4>
+        <div class="avatar-grid">
+          <div v-for="actor in favoriteActors" :key="actor.name" class="pill-card">
+            <div class="thumb small" :style="{ backgroundImage: `url(${actor.image})` }"></div>
+            <span>{{ actor.name }}</span>
+          </div>
+        </div>
       </div>
       <div class="mini-card">
         <h4>喜欢的角色</h4>
-        <p class="muted">{{ favoriteRoles.join('、') }}</p>
+        <div class="avatar-grid">
+          <div v-for="role in favoriteRoles" :key="role.name" class="pill-card">
+            <div class="thumb small" :style="{ backgroundImage: `url(${role.image})` }"></div>
+            <div>
+              <div>{{ role.name }}</div>
+              <p class="muted">{{ role.from }}</p>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="mini-card">
         <h4>想 cos 的角色</h4>
-        <p class="muted">{{ cosplayRoles.join('、') }}</p>
-      </div>
-      <div class="mini-card">
-        <h4>喜欢的演员</h4>
-        <p class="muted">{{ favoriteActors.join('、') }}</p>
+        <div class="avatar-grid">
+          <div v-for="role in cosplayRoles" :key="role.name" class="pill-card">
+            <div class="thumb small" :style="{ backgroundImage: `url(${role.image})` }"></div>
+            <div>
+              <div>{{ role.name }}</div>
+              <p class="muted">{{ role.from }}</p>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div class="section-title" style="margin-top: 16px">
@@ -132,9 +213,12 @@ const favoriteActors = ['蒂莫西·柴勒梅德', '赞达亚', '任素汐', '�
       </div>
       <ul class="list">
         <li v-for="movie in likedMovies" :key="movie.title" class="list-item">
-          <div>
-            <strong>{{ movie.title }}</strong>
-            <p class="muted">{{ movie.genre }} · {{ movie.language }} · {{ movie.type }}</p>
+          <div class="row">
+            <div class="thumb large" :style="{ backgroundImage: `url(${movie.image})` }"></div>
+            <div>
+              <strong>{{ movie.title }}</strong>
+              <p class="muted">{{ movie.genre }} · {{ movie.language }} · {{ movie.type }}</p>
+            </div>
           </div>
           <span class="status-dot success"></span>
         </li>

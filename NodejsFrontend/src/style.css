@@ -516,6 +516,45 @@ a {
   font-size: 13px;
 }
 
+.avatar-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.pill-card {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.thumb {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background-size: cover;
+  background-position: center;
+  background-color: var(--panel-2);
+  flex-shrink: 0;
+}
+
+.thumb.small {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+}
+
+.thumb.large {
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
+}
+
 @media (max-width: 768px) {
   .top-bar {
     flex-direction: column;
