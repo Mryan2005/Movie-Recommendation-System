@@ -446,7 +446,6 @@ a {
   width: 72px;
   height: 72px;
   border-radius: 50%;
-  border: 3px solid rgba(124, 58, 237, 0.4);
   background: linear-gradient(135deg, rgba(124, 58, 237, 0.35), rgba(34, 211, 238, 0.35));
   display: grid;
   place-items: center;
@@ -519,6 +518,8 @@ a {
   border-radius: 12px;
   border: 1px solid var(--border);
   background: #f8fafc;
+  position: relative;
+  margin-bottom: 12px;
 }
 
 .mini-card h4 {
@@ -653,6 +654,21 @@ a {
   padding: 12px;
   width: min(320px, 90vw);
   z-index: 30;
+  display: grid;
+  gap: 10px;
+}
+
+.edit-popover {
+  position: absolute;
+  top: 42px;
+  right: 12px;
+  background: #ffffff;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.12);
+  padding: 12px;
+  width: min(340px, 92vw);
+  z-index: 28;
   display: grid;
   gap: 10px;
 }
