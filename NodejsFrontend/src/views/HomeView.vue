@@ -102,6 +102,9 @@ const actors = [
         <div class="tag-row">
           <span class="tag">关注</span>
           <span class="tag">订阅新片</span>
+          <RouterLink class="tag link" :to="`/actor/${actor.name === '蒂莫西·柴勒梅德' ? 'paul' : 'actor'}`">
+            演员资料
+          </RouterLink>
         </div>
       </div>
     </div>
