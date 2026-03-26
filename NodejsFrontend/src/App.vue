@@ -14,6 +14,9 @@ import { RouterLink, RouterView } from 'vue-router'
         <RouterLink to="/register">注册</RouterLink>
         <RouterLink to="/profile">用户资料</RouterLink>
         <RouterLink to="/settings">设置</RouterLink>
+        <RouterLink to="/movie/dune">电影资料</RouterLink>
+        <RouterLink to="/actor/paul">演员资料</RouterLink>
+        <RouterLink to="/role/paul-atreides">角色资料</RouterLink>
       </nav>
       <div class="actions">
         <RouterLink class="ghost-btn" to="/forgot-password">忘记密码</RouterLink>

@@ -485,6 +485,37 @@ a {
   align-items: center;
 }
 
+.comment-form {
+  display: grid;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.comment-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.comment-item {
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.rating {
+  background: rgba(124, 58, 237, 0.15);
+  color: #c4b5fd;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 13px;
+}
+
 @media (max-width: 768px) {
   .top-bar {
     flex-direction: column;
