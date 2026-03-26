@@ -7,54 +7,57 @@ const createThumb = (label, color = '#334155') =>
   )}`
 
 const profile = ref({
-  name: 'Echo',
-  email: 'echo@example.com',
-  gender: '女',
-  avatar: createThumb('E', '#7c3aed'),
+  name: 'Mryan2005',
+  email: 'mryan2005@mryan2005.top',
+  gender: '男',
+  avatar: createThumb('Yan', '#7c3aed'),
   bio: '热爱科幻与悬疑，偏爱大卫·芬奇的作品。',
   city: '上海',
   signature: '“故事，就是人对抗时间的方式。”',
 })
 
-const favorites = [
-  { title: '社交网络', tag: '传记 / 剧情' },
-  { title: '银翼杀手2049', tag: '科幻 / 视觉' },
-  { title: '无间道', tag: '犯罪 / 港片' },
-]
+const favorites = []
 
 const watching = [
-  { title: '禁闭岛', progress: '已看 70%' },
+  { title: '禁闭岛', progress: '已看 100%' },
   { title: '降临', progress: '待看' },
 ]
 
 const likedMovies = ref([
   {
-    title: '沙丘2',
-    genre: '科幻',
-    language: '英语',
+    title: '少林足球',
+    genre: '喜剧',
+    language: '粤语',
     type: '电影',
-    image: createThumb('Dune 2', '#0ea5e9'),
+    image: createThumb('少林足球', '#0ea5e9'),
   },
   {
-    title: '孤注一掷',
-    genre: '犯罪',
-    language: '国语',
+    title: '赌神',
+    genre: '喜剧',
+    language: '粤语',
     type: '电影',
-    image: createThumb('孤注', '#1f2937'),
+    image: createThumb('赌神', '#1f2937'),
   },
   {
-    title: '我的三体',
-    genre: '科幻',
-    language: '国语',
-    type: '动漫',
-    image: createThumb('三体', '#475569'),
+    title: '六福喜事',
+    genre: '喜剧',
+    language: '粤语',
+    type: '电影',
+    image: createThumb('六福喜事', '#475569'),
   },
   {
-    title: '想见你',
-    genre: '爱情',
-    language: '国语',
+    title: '功夫',
+    genre: '喜剧',
+    language: '粤语',
+    type: '电影',
+    image: createThumb('功夫', '#7c3aed'),
+  },
+  {
+    title: '上海滩',
+    genre: '民国，爱情',
+    language: '粤语',
     type: '电视剧',
-    image: createThumb('想见你', '#7c3aed'),
+    image: createThumb('上海滩', '#475569'),
   },
 ])
 
@@ -77,14 +80,131 @@ const showStats = ref(false)
 
 const favoriteRoles = ref([
   {
-    name: '保罗·厄崔迪',
-    from: '沙丘',
-    image: createThumb('Paul', '#0ea5e9'),
+    name: '月代雪',
+    from: '魔法少女的魔女审判',
+    image: 'https://github.com/Mryan2005/Movie-Recommendation-System/blob/copilot/add-movie-recommendation-home-login-register/imgs/Tsukishiro%20Yuki.png?raw=true',
   },
   {
-    name: '小丑',
-    from: '黑暗骑士',
-    image: createThumb('Joker', '#7c3aed'),
+    name: '伊蕾娜',
+    from: '魔女之旅',
+    image: 'https://github.com/Mryan2005/Movie-Recommendation-System/blob/copilot/add-movie-recommendation-home-login-register/imgs/Elaina.jpg?raw=true',
+  },
+  {
+    name: '太宰治',
+    from: '文豪野犬',
+    image: createThumb('太宰', '#475569'),
+  },
+  {
+    name: '温迪',
+    from: '原神',
+    image: createThumb('温迪', '#0ea5e9'),
+  },
+  {
+    name: '白钰袖',
+    from: '风灵玉秀',
+    image: 'https://isaacsimplusros2.mryan2005.top/img/avatar.png',
+  },
+  {
+    name: '朝武芳乃',
+    from: '千恋万花',
+    image: createThumb('朝武芳乃', '#7c3aed'),
+  },
+  {
+    name: '丛雨',
+    from: '千恋万花',
+    image: createThumb('丛雨', '#1f2937'),
+  },
+  {
+    name: '东海帝王',
+    from: 'Pretty Derby',
+    image: createThumb('东海帝王', '#475569'),
+  },
+  {
+    name: '秋川弥生',
+    from: 'Pretty Derby',
+    image: createThumb('秋川弥生', '#7c3aed'),
+  },
+  {
+    name: '堂吉诃德',
+    from: '堂吉诃德',
+    image: createThumb('堂吉诃德', '#0ea5e9'),
+  },
+  {
+    name: '卡提希娅',
+    from: '鸣潮',
+    image: createThumb('卡提希娅', '#475569'),
+  },
+  {
+    name: '菲比',
+    from: '鸣潮',
+    image: createThumb('菲比', '#1f2937'),
+  },
+  {
+    name: '今汐',
+    from: '鸣潮',
+    image: createThumb('今汐', '#7c3aed'),
+  },
+  {
+    name: '彦卿',
+    from: '崩坏：星穹铁道',
+    image: createThumb('彦卿', '#0ea5e9'),
+  },
+  {
+    name: '派蒙',
+    from: '原神',
+    image: createThumb('派蒙', '#475569'),
+  },
+  {
+    name: '灰原哀',
+    from: '名侦探柯南',
+    image: createThumb('灰原', '#1f2937'),
+  },
+  {
+    name: '夏洛克',
+    from: '神探夏洛克',
+    image: createThumb('SH', '#334155'),
+  },
+  {
+    name: '憨豆先生',
+    from: '憨豆先生',
+    image: createThumb('憨豆', '#334155'),
+  },
+])
+const cosplayRoles = ref([
+  {
+    name: '月代雪',
+    from: '魔法少女的魔女审判',
+    image: 'https://github.com/Mryan2005/Movie-Recommendation-System/blob/copilot/add-movie-recommendation-home-login-register/imgs/Tsukishiro%20Yuki.png?raw=true',
+  },
+  {
+    name: '温迪',
+    from: '原神',
+    image: createThumb('温迪', '#0ea5e9'),
+  },
+  {
+    name: '白钰袖',
+    from: '风灵玉秀',
+    image: 'https://isaacsimplusros2.mryan2005.top/img/avatar.png',
+  },
+  {
+    name: '朝武芳乃',
+    from: '千恋万花',
+    image: createThumb('朝武芳乃', '#7c3aed'),
+  },
+  {
+    name: '灰原哀',
+    from: '名侦探柯南',
+    image: createThumb('灰原', '#1f2937'),
+  },
+  {
+    name: '堂吉诃德',
+    from: '堂吉诃德',
+    image: createThumb('堂吉诃德', '#0ea5e9'),
+  },
+  {
+    name: '憨豆先生',
+    from: '憨豆先生',
+    image: createThumb('憨豆', '#334155'),
   },
   {
     name: '夏洛克',
@@ -92,33 +212,25 @@ const favoriteRoles = ref([
     image: createThumb('SH', '#334155'),
   },
 ])
-const cosplayRoles = ref([
-  {
-    name: '阿狸',
-    from: '英雄联盟',
-    image: createThumb('Ahri', '#f97316'),
-  },
-  {
-    name: '薇尔莉特',
-    from: '紫罗兰永恒花园',
-    image: createThumb('Violet', '#14b8a6'),
-  },
-])
 const favoriteActors = ref([
   {
-    name: '蒂莫西·柴勒梅德',
-    image: createThumb('TC', '#7c3aed'),
+    name: '周星驰',
+    image: createThumb('周星驰', '#7c3aed'),
   },
-  { name: '赞达亚', image: createThumb('Zendaya', '#0ea5e9') },
-  { name: '任素汐', image: createThumb('任', '#1f2937') },
-  { name: '梁朝伟', image: createThumb('梁', '#475569') },
+  { name: '周润发', image: createThumb('周润发', '#0ea5e9') },
+  { name: '黄子华', image: createThumb('黄子华', '#1f2937') },
+  { name: '谢君豪', image: createThumb('谢君豪', '#475569') },
+  { name: '王志文', image: createThumb('王志文', '#334155') },
+  { name: '林栋甫', image: createThumb('林栋甫', '#475569') },
+  { name: '姜文', image: createThumb('姜文', '#475569') },
 ])
 
 const newActorName = ref('')
 const newActorImage = ref('')
 const favoriteLanguages = ref([
-  { name: '英语', image: createThumb('EN', '#0ea5e9') },
+  { name: '粤语', image: createThumb('粤', '#0ea5e9') },
   { name: '国语', image: createThumb('中', '#7c3aed') },
+  { name: '英语', image: createThumb('EN', '#0ea5e9') },
 ])
 const newLanguageName = ref('')
 const newLanguageImage = ref('')
@@ -213,8 +325,7 @@ const removeMovie = (index) => likedMovies.value.splice(index, 1)
             <p class="muted">性别：{{ profile.gender }}</p>
             <p class="muted">个性签名：{{ profile.signature }}</p>
           </div>
-        </div>
-        <span class="pill">观影偏好</span>
+        </div>        
       </header>
       <div class="form-grid">
         <div class="field">
@@ -250,7 +361,6 @@ const removeMovie = (index) => likedMovies.value.splice(index, 1)
     <div class="panel">
       <header>
         <div>偏好摘要</div>
-        <span class="pill-blue">实时同步</span>
       </header>
       <div class="mini-card">
         <div class="section-head">
