@@ -716,7 +716,6 @@ const listModalData = computed(() => {
       <div class="detail-header">
         <div class="thumb large" :style="{ backgroundImage: detailModal.image ? `url(${detailModal.image})` : '' }"></div>
         <div>
-          <p class="muted">{{ detailModal.subtitle }}</p>
           <h3 style="margin: 4px 0">{{ detailModal.title }}</h3>
           <p class="muted" v-if="detailModal.meta">{{ detailModal.meta }}</p>
         </div>
