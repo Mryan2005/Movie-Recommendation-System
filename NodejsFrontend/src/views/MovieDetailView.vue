@@ -96,7 +96,7 @@ const submitComment = () => {
       </div>
 
       <ul class="comment-list">
-        <li v-for="(comment, index) in comments" :key="comment.user + index" class="comment-item">
+        <li v-for="(comment, index) in comments" :key="index" class="comment-item">
           <div class="row">
             <strong>{{ comment.user }}</strong>
             <span class="rating">⭐ {{ comment.rating }}</span>
