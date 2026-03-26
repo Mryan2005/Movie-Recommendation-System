@@ -443,7 +443,7 @@ const listModalData = computed(() => {
           >
             <div class="thumb small" :style="{ backgroundImage: `url(${actor.item.image})` }"></div>
             <span>{{ actor.item.name }}</span>
-            <button class="ghost-btn tiny" type="button" @click.stop="removeActor(actor.idx)">移除</button>
+            <button v-if="showActorEditor" class="ghost-btn tiny" type="button" @click.stop="removeActor(actor.idx)">移除</button>
           </div>
         </div>
         <div v-if="showActorEditor" class="edit-popover">
@@ -475,7 +475,7 @@ const listModalData = computed(() => {
             :title="`语种：${lang.name}`"
           >
             <span>{{ lang.name }}</span>
-            <button class="ghost-btn tiny" type="button" @click.stop="removeLanguage(index)">移除</button>
+            <button v-if="showLanguageEditor" class="ghost-btn tiny" type="button" @click.stop="removeLanguage(index)">移除</button>
           </div>
         </div>
         <div v-if="showLanguageEditor" class="edit-popover">
@@ -519,7 +519,7 @@ const listModalData = computed(() => {
               <div>{{ role.item.name }}</div>
               <p class="muted">{{ role.item.from }}</p>
             </div>
-            <button class="ghost-btn tiny" type="button" @click.stop="removeRole(role.idx)">移除</button>
+            <button v-if="showRoleEditor" class="ghost-btn tiny" type="button" @click.stop="removeRole(role.idx)">移除</button>
           </div>
         </div>
         <div v-if="showRoleEditor" class="edit-popover">
@@ -567,7 +567,7 @@ const listModalData = computed(() => {
               <div>{{ role.item.name }}</div>
               <p class="muted">{{ role.item.from }}</p>
             </div>
-            <button class="ghost-btn tiny" type="button" @click.stop="removeCos(role.idx)">移除</button>
+            <button v-if="showCosEditor" class="ghost-btn tiny" type="button" @click.stop="removeCos(role.idx)">移除</button>
           </div>
         </div>
         <div v-if="showCosEditor" class="edit-popover">
@@ -660,7 +660,7 @@ const listModalData = computed(() => {
           </div>
           <div class="inline-actions">
             <span class="status-dot success"></span>
-            <button class="ghost-btn tiny" type="button" @click.stop="removeMovie(movie.idx)">移除</button>
+            <button v-if="showMovieEditor" class="ghost-btn tiny" type="button" @click.stop="removeMovie(movie.idx)">移除</button>
           </div>
         </li>
       </ul>
@@ -749,7 +749,7 @@ const listModalData = computed(() => {
                 <p v-if="listModalData.type !== 'actor'" class="muted">{{ entry.item.from }}</p>
               </div>
               <button
-                v-if="listModalData.type === 'actor'"
+                v-if="listModalData.type === 'actor' && showActorEditor"
                 class="ghost-btn tiny"
                 type="button"
                 @click.stop="removeActor(entry.idx)"
@@ -757,7 +757,7 @@ const listModalData = computed(() => {
                 移除
               </button>
               <button
-                v-else-if="listModalData.type === 'role'"
+                v-else-if="listModalData.type === 'role' && showRoleEditor"
                 class="ghost-btn tiny"
                 type="button"
                 @click.stop="removeRole(entry.idx)"
@@ -765,7 +765,7 @@ const listModalData = computed(() => {
                 移除
               </button>
               <button
-                v-else
+                v-else-if="listModalData.type === 'cos' && showCosEditor"
                 class="ghost-btn tiny"
                 type="button"
                 @click.stop="removeCos(entry.idx)"
@@ -795,7 +795,9 @@ const listModalData = computed(() => {
               </div>
               <div class="inline-actions">
                 <span class="status-dot success"></span>
-                <button class="ghost-btn tiny" type="button" @click.stop="removeMovie(entry.idx)">移除</button>
+                <button v-if="showMovieEditor" class="ghost-btn tiny" type="button" @click.stop="removeMovie(entry.idx)">
+                  移除
+                </button>
               </div>
             </li>
           </ul>
