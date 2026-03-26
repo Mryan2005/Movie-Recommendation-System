@@ -705,6 +705,24 @@ a {
   backdrop-filter: blur(18px);
 }
 
+.list-modal {
+  width: min(560px, 94vw);
+  max-height: 80vh;
+  overflow: auto;
+}
+
+.list-modal-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.list-modal-body {
+  display: grid;
+  gap: 12px;
+}
+
 .detail-header {
   display: flex;
   gap: 12px;
