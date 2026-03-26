@@ -271,10 +271,18 @@ const removeMovie = (index) => likedMovies.value.splice(index, 1)
             <button class="ghost-btn tiny" type="button" @click="removeActor(index)">移除</button>
           </div>
         </div>
-        <div v-if="showActorEditor" class="inline-form">
-          <input v-model="newActorName" placeholder="添加演员姓名" />
-          <input v-model="newActorImage" placeholder="图片链接（可选）" />
-          <button class="primary-btn tiny" type="button" @click="addActor">添加</button>
+        <div v-if="showActorEditor" class="edit-popover">
+          <div class="field">
+            <label>演员姓名</label>
+            <input v-model="newActorName" placeholder="添加演员姓名" />
+          </div>
+          <div class="field">
+            <label>图片链接（可选）</label>
+            <input v-model="newActorImage" placeholder="图片链接（可选）" />
+          </div>
+          <div class="form-actions">
+            <button class="primary-btn tiny" type="button" @click="addActor">添加</button>
+          </div>
         </div>
       </div>
       <div class="mini-card">
@@ -296,10 +304,18 @@ const removeMovie = (index) => likedMovies.value.splice(index, 1)
             <button class="ghost-btn tiny" type="button" @click="removeLanguage(index)">移除</button>
           </div>
         </div>
-        <div v-if="showLanguageEditor" class="inline-form">
-          <input v-model="newLanguageName" placeholder="添加语种，如 英语/国语" />
-          <input v-model="newLanguageImage" placeholder="图片链接（可选）" />
-          <button class="primary-btn tiny" type="button" @click="addLanguage">添加</button>
+        <div v-if="showLanguageEditor" class="edit-popover">
+          <div class="field">
+            <label>语种</label>
+            <input v-model="newLanguageName" placeholder="添加语种，如 英语/国语" />
+          </div>
+          <div class="field">
+            <label>图片链接（可选）</label>
+            <input v-model="newLanguageImage" placeholder="图片链接（可选）" />
+          </div>
+          <div class="form-actions">
+            <button class="primary-btn tiny" type="button" @click="addLanguage">添加</button>
+          </div>
         </div>
       </div>
       <div class="mini-card">
@@ -324,11 +340,22 @@ const removeMovie = (index) => likedMovies.value.splice(index, 1)
             <button class="ghost-btn tiny" type="button" @click="removeRole(index)">移除</button>
           </div>
         </div>
-        <div v-if="showRoleEditor" class="inline-form">
-          <input v-model="newRole.name" placeholder="角色名" />
-          <input v-model="newRole.from" placeholder="来源/作品" />
-          <input v-model="newRole.image" placeholder="图片链接（可选）" />
-          <button class="primary-btn tiny" type="button" @click="addRole">添加</button>
+        <div v-if="showRoleEditor" class="edit-popover">
+          <div class="field">
+            <label>角色名</label>
+            <input v-model="newRole.name" placeholder="角色名" />
+          </div>
+          <div class="field">
+            <label>来源/作品</label>
+            <input v-model="newRole.from" placeholder="来源/作品" />
+          </div>
+          <div class="field">
+            <label>图片链接（可选）</label>
+            <input v-model="newRole.image" placeholder="图片链接（可选）" />
+          </div>
+          <div class="form-actions">
+            <button class="primary-btn tiny" type="button" @click="addRole">添加</button>
+          </div>
         </div>
       </div>
       <div class="mini-card">
@@ -353,11 +380,22 @@ const removeMovie = (index) => likedMovies.value.splice(index, 1)
             <button class="ghost-btn tiny" type="button" @click="removeCos(index)">移除</button>
           </div>
         </div>
-        <div v-if="showCosEditor" class="inline-form">
-          <input v-model="newCos.name" placeholder="角色名" />
-          <input v-model="newCos.from" placeholder="来源/作品" />
-          <input v-model="newCos.image" placeholder="图片链接（可选）" />
-          <button class="primary-btn tiny" type="button" @click="addCos">添加</button>
+        <div v-if="showCosEditor" class="edit-popover">
+          <div class="field">
+            <label>角色名</label>
+            <input v-model="newCos.name" placeholder="角色名" />
+          </div>
+          <div class="field">
+            <label>来源/作品</label>
+            <input v-model="newCos.from" placeholder="来源/作品" />
+          </div>
+          <div class="field">
+            <label>图片链接（可选）</label>
+            <input v-model="newCos.image" placeholder="图片链接（可选）" />
+          </div>
+          <div class="form-actions">
+            <button class="primary-btn tiny" type="button" @click="addCos">添加</button>
+          </div>
         </div>
       </div>
 
