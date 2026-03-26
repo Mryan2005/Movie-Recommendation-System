@@ -474,7 +474,6 @@ const listModalData = computed(() => {
             class="pill-card"
             :title="`语种：${lang.name}`"
           >
-            <div class="thumb small" :style="{ backgroundImage: `url(${lang.image})` }"></div>
             <span>{{ lang.name }}</span>
             <button class="ghost-btn tiny" type="button" @click.stop="removeLanguage(index)">移除</button>
           </div>
