@@ -77,6 +77,7 @@ const stats = computed(() => {
   }
 })
 const showStats = ref(false)
+const listModal = ref(null)
 
 const favoriteRoles = ref([
   {
@@ -243,6 +244,10 @@ const showRoleEditor = ref(false)
 const showCosEditor = ref(false)
 const showMovieEditor = ref(false)
 const detailModal = ref(null)
+const visibleActors = computed(() => favoriteActors.value.map((item, idx) => ({ item, idx })).slice(0, 10))
+const visibleRoles = computed(() => favoriteRoles.value.map((item, idx) => ({ item, idx })).slice(0, 10))
+const visibleCos = computed(() => cosplayRoles.value.map((item, idx) => ({ item, idx })).slice(0, 10))
+const visibleMovies = computed(() => likedMovies.value.map((item, idx) => ({ item, idx })).slice(0, 5))
 
 const barWidth = (list, count) => {
   const max = Math.max(...(list?.map((i) => i.count) || [1]), 1)
@@ -336,6 +341,30 @@ const openDetail = (type, item) => {
 const closeDetail = () => {
   detailModal.value = null
 }
+
+const openList = (type) => {
+  listModal.value = type
+}
+
+const closeList = () => {
+  listModal.value = null
+}
+
+const listModalData = computed(() => {
+  if (!listModal.value) return null
+  const map = {
+    actor: { title: '全部喜欢的演员', items: favoriteActors.value, type: 'actor' },
+    role: { title: '全部喜欢的角色', items: favoriteRoles.value, type: 'role' },
+    cos: { title: '全部想 cos 的角色', items: cosplayRoles.value, type: 'cos' },
+    movie: { title: '全部看过且喜欢的电影', items: likedMovies.value, type: 'movie' },
+  }
+  const result = map[listModal.value]
+  if (!result) return null
+  return {
+    ...result,
+    items: result.items.map((item, idx) => ({ item, idx })),
+  }
+})
 </script>
 
 <template>
@@ -395,23 +424,26 @@ const closeDetail = () => {
       <div class="mini-card">
         <div class="section-head">
           <h4>喜欢的演员</h4>
-          <button class="ghost-btn tiny" type="button" @click="showActorEditor = !showActorEditor">
-            {{ showActorEditor ? '收起编辑' : '编辑' }}
-          </button>
+          <div class="section-actions">
+            <button v-if="favoriteActors.length > 10" class="ghost-btn tiny" type="button" @click="openList('actor')">显示全部</button>
+            <button class="ghost-btn tiny" type="button" @click="showActorEditor = !showActorEditor">
+              {{ showActorEditor ? '收起编辑' : '编辑' }}
+            </button>
+          </div>
         </div>
         <div class="avatar-grid">
           <div
-            v-for="(actor, index) in favoriteActors"
-            :key="actor.name"
+            v-for="actor in visibleActors"
+            :key="actor.item.name"
             class="pill-card"
-            :title="`演员：${actor.name}`"
+            :title="`演员：${actor.item.name}`"
             role="button"
             tabindex="0"
-            @click="openDetail('actor', actor)"
+            @click="openDetail('actor', actor.item)"
           >
-            <div class="thumb small" :style="{ backgroundImage: `url(${actor.image})` }"></div>
-            <span>{{ actor.name }}</span>
-            <button class="ghost-btn tiny" type="button" @click.stop="removeActor(index)">移除</button>
+            <div class="thumb small" :style="{ backgroundImage: `url(${actor.item.image})` }"></div>
+            <span>{{ actor.item.name }}</span>
+            <button class="ghost-btn tiny" type="button" @click.stop="removeActor(actor.idx)">移除</button>
           </div>
         </div>
         <div v-if="showActorEditor" class="edit-popover">
@@ -464,26 +496,31 @@ const closeDetail = () => {
       <div class="mini-card">
         <div class="section-head">
           <h4>喜欢的角色</h4>
-          <button class="ghost-btn tiny" type="button" @click="showRoleEditor = !showRoleEditor">
-            {{ showRoleEditor ? '收起编辑' : '编辑' }}
-          </button>
+          <div class="section-actions">
+            <button v-if="favoriteRoles.length > 10" class="ghost-btn tiny" type="button" @click="openList('role')">
+              显示全部
+            </button>
+            <button class="ghost-btn tiny" type="button" @click="showRoleEditor = !showRoleEditor">
+              {{ showRoleEditor ? '收起编辑' : '编辑' }}
+            </button>
+          </div>
         </div>
         <div class="avatar-grid">
           <div
-            v-for="(role, index) in favoriteRoles"
-            :key="role.name"
+            v-for="role in visibleRoles"
+            :key="role.item.name"
             class="pill-card"
-            :title="`角色：${role.name} · 来自：${role.from}`"
+            :title="`角色：${role.item.name} · 来自：${role.item.from}`"
             role="button"
             tabindex="0"
-            @click="openDetail('role', role)"
+            @click="openDetail('role', role.item)"
           >
-            <div class="thumb small" :style="{ backgroundImage: `url(${role.image})` }"></div>
+            <div class="thumb small" :style="{ backgroundImage: `url(${role.item.image})` }"></div>
             <div>
-              <div>{{ role.name }}</div>
-              <p class="muted">{{ role.from }}</p>
+              <div>{{ role.item.name }}</div>
+              <p class="muted">{{ role.item.from }}</p>
             </div>
-            <button class="ghost-btn tiny" type="button" @click.stop="removeRole(index)">移除</button>
+            <button class="ghost-btn tiny" type="button" @click.stop="removeRole(role.idx)">移除</button>
           </div>
         </div>
         <div v-if="showRoleEditor" class="edit-popover">
@@ -507,26 +544,31 @@ const closeDetail = () => {
       <div class="mini-card">
         <div class="section-head">
           <h4>想 cos 的角色</h4>
-          <button class="ghost-btn tiny" type="button" @click="showCosEditor = !showCosEditor">
-            {{ showCosEditor ? '收起编辑' : '编辑' }}
-          </button>
+          <div class="section-actions">
+            <button v-if="cosplayRoles.length > 10" class="ghost-btn tiny" type="button" @click="openList('cos')">
+              显示全部
+            </button>
+            <button class="ghost-btn tiny" type="button" @click="showCosEditor = !showCosEditor">
+              {{ showCosEditor ? '收起编辑' : '编辑' }}
+            </button>
+          </div>
         </div>
         <div class="avatar-grid">
           <div
-            v-for="(role, index) in cosplayRoles"
-            :key="role.name"
+            v-for="role in visibleCos"
+            :key="role.item.name"
             class="pill-card"
-            :title="`角色：${role.name} · 来自：${role.from}`"
+            :title="`角色：${role.item.name} · 来自：${role.item.from}`"
             role="button"
             tabindex="0"
-            @click="openDetail('cos', role)"
+            @click="openDetail('cos', role.item)"
           >
-            <div class="thumb small" :style="{ backgroundImage: `url(${role.image})` }"></div>
+            <div class="thumb small" :style="{ backgroundImage: `url(${role.item.image})` }"></div>
             <div>
-              <div>{{ role.name }}</div>
-              <p class="muted">{{ role.from }}</p>
+              <div>{{ role.item.name }}</div>
+              <p class="muted">{{ role.item.from }}</p>
             </div>
-            <button class="ghost-btn tiny" type="button" @click.stop="removeCos(index)">移除</button>
+            <button class="ghost-btn tiny" type="button" @click.stop="removeCos(role.idx)">移除</button>
           </div>
         </div>
         <div v-if="showCosEditor" class="edit-popover">
@@ -554,6 +596,9 @@ const closeDetail = () => {
           <p>电影列表 & 数据统计</p>
         </div>
         <div class="section-actions">
+          <button v-if="likedMovies.length > 5" class="ghost-btn tiny" type="button" @click="openList('movie')">
+            显示全部
+          </button>
           <button class="ghost-btn tiny" type="button" @click="showMovieEditor = !showMovieEditor">
             {{ showMovieEditor ? '收起编辑' : '编辑' }}
           </button>
@@ -599,24 +644,24 @@ const closeDetail = () => {
       </div>
       <ul class="list">
         <li
-          v-for="(movie, index) in likedMovies"
-          :key="movie.title"
+          v-for="movie in visibleMovies"
+          :key="movie.item.title"
           class="list-item"
-          :title="`${movie.title} · ${movie.genre} · ${movie.language} · ${movie.type}`"
+          :title="`${movie.item.title} · ${movie.item.genre} · ${movie.item.language} · ${movie.item.type}`"
           role="button"
           tabindex="0"
-          @click="openDetail('movie', movie)"
+          @click="openDetail('movie', movie.item)"
         >
           <div class="row">
-            <div class="thumb large" :style="{ backgroundImage: `url(${movie.image})` }"></div>
+            <div class="thumb large" :style="{ backgroundImage: `url(${movie.item.image})` }"></div>
             <div>
-              <strong>{{ movie.title }}</strong>
-              <p class="muted">{{ movie.genre }} · {{ movie.language }} · {{ movie.type }}</p>
+              <strong>{{ movie.item.title }}</strong>
+              <p class="muted">{{ movie.item.genre }} · {{ movie.item.language }} · {{ movie.item.type }}</p>
             </div>
           </div>
           <div class="inline-actions">
             <span class="status-dot success"></span>
-            <button class="ghost-btn tiny" type="button" @click.stop="removeMovie(index)">移除</button>
+            <button class="ghost-btn tiny" type="button" @click.stop="removeMovie(movie.idx)">移除</button>
           </div>
         </li>
       </ul>
@@ -675,6 +720,88 @@ const closeDetail = () => {
           <h3 style="margin: 4px 0">{{ detailModal.title }}</h3>
           <p class="muted" v-if="detailModal.meta">{{ detailModal.meta }}</p>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <div v-if="listModalData" class="detail-backdrop" @click.self="closeList">
+    <div class="detail-modal list-modal">
+      <button class="close-btn" type="button" aria-label="关闭" @click="closeList">
+        <span aria-hidden="true">×</span>
+      </button>
+      <div class="list-modal-head">
+        <h3>{{ listModalData.title }}</h3>
+        <p class="muted">共 {{ listModalData.items.length }} 项</p>
+      </div>
+      <div class="list-modal-body">
+        <template v-if="['actor', 'role', 'cos'].includes(listModalData.type)">
+          <div class="avatar-grid">
+            <div
+              v-for="entry in listModalData.items"
+              :key="entry.item.name"
+              class="pill-card"
+              :title="listModalData.type === 'actor' ? `演员：${entry.item.name}` : `角色：${entry.item.name} · 来自：${entry.item.from}`"
+              role="button"
+              tabindex="0"
+              @click="openDetail(listModalData.type, entry.item)"
+            >
+              <div class="thumb small" :style="{ backgroundImage: `url(${entry.item.image})` }"></div>
+              <div>
+                <div>{{ entry.item.name }}</div>
+                <p v-if="listModalData.type !== 'actor'" class="muted">{{ entry.item.from }}</p>
+              </div>
+              <button
+                v-if="listModalData.type === 'actor'"
+                class="ghost-btn tiny"
+                type="button"
+                @click.stop="removeActor(entry.idx)"
+              >
+                移除
+              </button>
+              <button
+                v-else-if="listModalData.type === 'role'"
+                class="ghost-btn tiny"
+                type="button"
+                @click.stop="removeRole(entry.idx)"
+              >
+                移除
+              </button>
+              <button
+                v-else
+                class="ghost-btn tiny"
+                type="button"
+                @click.stop="removeCos(entry.idx)"
+              >
+                移除
+              </button>
+            </div>
+          </div>
+        </template>
+        <template v-else>
+          <ul class="list">
+            <li
+              v-for="entry in listModalData.items"
+              :key="entry.item.title"
+              class="list-item"
+              :title="`${entry.item.title} · ${entry.item.genre} · ${entry.item.language} · ${entry.item.type}`"
+              role="button"
+              tabindex="0"
+              @click="openDetail('movie', entry.item)"
+            >
+              <div class="row">
+                <div class="thumb large" :style="{ backgroundImage: `url(${entry.item.image})` }"></div>
+                <div>
+                  <strong>{{ entry.item.title }}</strong>
+                  <p class="muted">{{ entry.item.genre }} · {{ entry.item.language }} · {{ entry.item.type }}</p>
+                </div>
+              </div>
+              <div class="inline-actions">
+                <span class="status-dot success"></span>
+                <button class="ghost-btn tiny" type="button" @click.stop="removeMovie(entry.idx)">移除</button>
+              </div>
+            </li>
+          </ul>
+        </template>
       </div>
     </div>
   </div>
