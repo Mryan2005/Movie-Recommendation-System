@@ -115,20 +115,34 @@ const favoriteActors = ref([
 ])
 
 const newActorName = ref('')
+const newActorImage = ref('')
 const favoriteLanguages = ref([
   { name: '英语', image: createThumb('EN', '#0ea5e9') },
   { name: '国语', image: createThumb('中', '#7c3aed') },
 ])
 const newLanguageName = ref('')
-const newRole = ref({ name: '', from: '' })
-const newCos = ref({ name: '', from: '' })
-const newMovie = ref({ title: '', genre: '', language: '', type: '' })
+const newLanguageImage = ref('')
+const newRole = ref({ name: '', from: '', image: '' })
+const newCos = ref({ name: '', from: '', image: '' })
+const newMovie = ref({ title: '', genre: '', language: '', type: '', image: '' })
+const showActorEditor = ref(false)
+const showLanguageEditor = ref(false)
+const showRoleEditor = ref(false)
+const showCosEditor = ref(false)
+const showMovieEditor = ref(false)
+
+const barWidth = (list, count) => {
+  const max = Math.max(...(list?.map((i) => i.count) || [1]), 1)
+  return `${Math.max((count / max) * 100, 8)}%`
+}
 
 const addActor = () => {
   const name = newActorName.value.trim()
   if (!name) return
-  favoriteActors.value.push({ name, image: createThumb(name) })
+  const image = newActorImage.value.trim() || createThumb(name)
+  favoriteActors.value.push({ name, image })
   newActorName.value = ''
+  newActorImage.value = ''
 }
 
 const removeActor = (index) => favoriteActors.value.splice(index, 1)
@@ -136,8 +150,10 @@ const removeActor = (index) => favoriteActors.value.splice(index, 1)
 const addLanguage = () => {
   const name = newLanguageName.value.trim()
   if (!name) return
-  favoriteLanguages.value.push({ name, image: createThumb(name) })
+  const image = newLanguageImage.value.trim() || createThumb(name)
+  favoriteLanguages.value.push({ name, image })
   newLanguageName.value = ''
+  newLanguageImage.value = ''
 }
 
 const removeLanguage = (index) => favoriteLanguages.value.splice(index, 1)
@@ -146,8 +162,9 @@ const addRole = () => {
   const name = newRole.value.name.trim()
   const from = newRole.value.from.trim()
   if (!name || !from) return
-  favoriteRoles.value.push({ name, from, image: createThumb(name) })
-  newRole.value = { name: '', from: '' }
+  const image = newRole.value.image.trim() || createThumb(name)
+  favoriteRoles.value.push({ name, from, image })
+  newRole.value = { name: '', from: '', image: '' }
 }
 
 const removeRole = (index) => favoriteRoles.value.splice(index, 1)
@@ -156,8 +173,9 @@ const addCos = () => {
   const name = newCos.value.name.trim()
   const from = newCos.value.from.trim()
   if (!name || !from) return
-  cosplayRoles.value.push({ name, from, image: createThumb(name) })
-  newCos.value = { name: '', from: '' }
+  const image = newCos.value.image.trim() || createThumb(name)
+  cosplayRoles.value.push({ name, from, image })
+  newCos.value = { name: '', from: '', image: '' }
 }
 
 const removeCos = (index) => cosplayRoles.value.splice(index, 1)
@@ -170,9 +188,9 @@ const addMovie = () => {
     genre: genre.trim(),
     language: language.trim(),
     type: type.trim(),
-    image: createThumb(title.trim()),
+    image: newMovie.value.image.trim() || createThumb(title.trim()),
   })
-  newMovie.value = { title: '', genre: '', language: '', type: '' }
+  newMovie.value = { title: '', genre: '', language: '', type: '', image: '' }
 }
 
 const removeMovie = (index) => likedMovies.value.splice(index, 1)
@@ -235,37 +253,69 @@ const removeMovie = (index) => likedMovies.value.splice(index, 1)
         <span class="pill-blue">实时同步</span>
       </header>
       <div class="mini-card">
-        <h4>喜欢的演员</h4>
+        <div class="section-head">
+          <h4>喜欢的演员</h4>
+          <button class="ghost-btn tiny" type="button" @click="showActorEditor = !showActorEditor">
+            {{ showActorEditor ? '收起编辑' : '编辑' }}
+          </button>
+        </div>
         <div class="avatar-grid">
-          <div v-for="(actor, index) in favoriteActors" :key="actor.name" class="pill-card">
+          <div
+            v-for="(actor, index) in favoriteActors"
+            :key="actor.name"
+            class="pill-card"
+            :title="`演员：${actor.name}`"
+          >
             <div class="thumb small" :style="{ backgroundImage: `url(${actor.image})` }"></div>
             <span>{{ actor.name }}</span>
             <button class="ghost-btn tiny" type="button" @click="removeActor(index)">移除</button>
           </div>
         </div>
-        <div class="inline-form">
+        <div v-if="showActorEditor" class="inline-form">
           <input v-model="newActorName" placeholder="添加演员姓名" />
+          <input v-model="newActorImage" placeholder="图片链接（可选）" />
           <button class="primary-btn tiny" type="button" @click="addActor">添加</button>
         </div>
       </div>
       <div class="mini-card">
-        <h4>喜欢的语种</h4>
+        <div class="section-head">
+          <h4>喜欢的语种</h4>
+          <button class="ghost-btn tiny" type="button" @click="showLanguageEditor = !showLanguageEditor">
+            {{ showLanguageEditor ? '收起编辑' : '编辑' }}
+          </button>
+        </div>
         <div class="avatar-grid">
-          <div v-for="(lang, index) in favoriteLanguages" :key="lang.name" class="pill-card">
+          <div
+            v-for="(lang, index) in favoriteLanguages"
+            :key="lang.name"
+            class="pill-card"
+            :title="`语种：${lang.name}`"
+          >
             <div class="thumb small" :style="{ backgroundImage: `url(${lang.image})` }"></div>
             <span>{{ lang.name }}</span>
             <button class="ghost-btn tiny" type="button" @click="removeLanguage(index)">移除</button>
           </div>
         </div>
-        <div class="inline-form">
+        <div v-if="showLanguageEditor" class="inline-form">
           <input v-model="newLanguageName" placeholder="添加语种，如 英语/国语" />
+          <input v-model="newLanguageImage" placeholder="图片链接（可选）" />
           <button class="primary-btn tiny" type="button" @click="addLanguage">添加</button>
         </div>
       </div>
       <div class="mini-card">
-        <h4>喜欢的角色</h4>
+        <div class="section-head">
+          <h4>喜欢的角色</h4>
+          <button class="ghost-btn tiny" type="button" @click="showRoleEditor = !showRoleEditor">
+            {{ showRoleEditor ? '收起编辑' : '编辑' }}
+          </button>
+        </div>
         <div class="avatar-grid">
-          <div v-for="(role, index) in favoriteRoles" :key="role.name" class="pill-card">
+          <div
+            v-for="(role, index) in favoriteRoles"
+            :key="role.name"
+            class="pill-card"
+            :title="`角色：${role.name} · 来自：${role.from}`"
+          >
             <div class="thumb small" :style="{ backgroundImage: `url(${role.image})` }"></div>
             <div>
               <div>{{ role.name }}</div>
@@ -274,16 +324,27 @@ const removeMovie = (index) => likedMovies.value.splice(index, 1)
             <button class="ghost-btn tiny" type="button" @click="removeRole(index)">移除</button>
           </div>
         </div>
-        <div class="inline-form">
+        <div v-if="showRoleEditor" class="inline-form">
           <input v-model="newRole.name" placeholder="角色名" />
           <input v-model="newRole.from" placeholder="来源/作品" />
+          <input v-model="newRole.image" placeholder="图片链接（可选）" />
           <button class="primary-btn tiny" type="button" @click="addRole">添加</button>
         </div>
       </div>
       <div class="mini-card">
-        <h4>想 cos 的角色</h4>
+        <div class="section-head">
+          <h4>想 cos 的角色</h4>
+          <button class="ghost-btn tiny" type="button" @click="showCosEditor = !showCosEditor">
+            {{ showCosEditor ? '收起编辑' : '编辑' }}
+          </button>
+        </div>
         <div class="avatar-grid">
-          <div v-for="(role, index) in cosplayRoles" :key="role.name" class="pill-card">
+          <div
+            v-for="(role, index) in cosplayRoles"
+            :key="role.name"
+            class="pill-card"
+            :title="`角色：${role.name} · 来自：${role.from}`"
+          >
             <div class="thumb small" :style="{ backgroundImage: `url(${role.image})` }"></div>
             <div>
               <div>{{ role.name }}</div>
@@ -292,24 +353,70 @@ const removeMovie = (index) => likedMovies.value.splice(index, 1)
             <button class="ghost-btn tiny" type="button" @click="removeCos(index)">移除</button>
           </div>
         </div>
-        <div class="inline-form">
+        <div v-if="showCosEditor" class="inline-form">
           <input v-model="newCos.name" placeholder="角色名" />
           <input v-model="newCos.from" placeholder="来源/作品" />
+          <input v-model="newCos.image" placeholder="图片链接（可选）" />
           <button class="primary-btn tiny" type="button" @click="addCos">添加</button>
         </div>
       </div>
 
-      <div class="section-title" style="margin-top: 16px">
+      <div class="section-title stats-anchor" style="margin-top: 16px">
         <div>
           <h2>看过且喜欢的电影</h2>
           <p>电影列表 & 数据统计</p>
         </div>
-        <button class="ghost-btn tiny" type="button" @click="showStats = !showStats">
-          {{ showStats ? '收起统计' : '查看统计' }}
-        </button>
+        <div class="section-actions">
+          <button class="ghost-btn tiny" type="button" @click="showMovieEditor = !showMovieEditor">
+            {{ showMovieEditor ? '收起编辑' : '编辑' }}
+          </button>
+          <button class="ghost-btn tiny" type="button" @click="showStats = !showStats">
+            {{ showStats ? '收起统计' : '查看统计' }}
+          </button>
+        </div>
+        <div v-if="showStats" class="stats-popover">
+          <div class="field">
+            <label>电影题材</label>
+            <div class="bar-chart">
+              <div v-for="item in stats.genres" :key="item.label" class="bar">
+                <span class="bar-label">{{ item.label }} · {{ item.count }}</span>
+                <div class="bar-track">
+                  <div class="bar-fill" :style="{ width: barWidth(stats.genres, item.count) }"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="field">
+            <label>语种</label>
+            <div class="bar-chart">
+              <div v-for="item in stats.languages" :key="item.label" class="bar">
+                <span class="bar-label">{{ item.label }} · {{ item.count }}</span>
+                <div class="bar-track">
+                  <div class="bar-fill" :style="{ width: barWidth(stats.languages, item.count) }"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="field">
+            <label>类型</label>
+            <div class="bar-chart">
+              <div v-for="item in stats.types" :key="item.label" class="bar">
+                <span class="bar-label">{{ item.label }} · {{ item.count }}</span>
+                <div class="bar-track">
+                  <div class="bar-fill" :style="{ width: barWidth(stats.types, item.count) }"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
       <ul class="list">
-        <li v-for="(movie, index) in likedMovies" :key="movie.title" class="list-item">
+        <li
+          v-for="(movie, index) in likedMovies"
+          :key="movie.title"
+          class="list-item"
+          :title="`${movie.title} · ${movie.genre} · ${movie.language} · ${movie.type}`"
+        >
           <div class="row">
             <div class="thumb large" :style="{ backgroundImage: `url(${movie.image})` }"></div>
             <div>
@@ -323,38 +430,13 @@ const removeMovie = (index) => likedMovies.value.splice(index, 1)
           </div>
         </li>
       </ul>
-      <div class="inline-form">
+      <div v-if="showMovieEditor" class="inline-form">
         <input v-model="newMovie.title" placeholder="电影名" />
         <input v-model="newMovie.genre" placeholder="题材" />
         <input v-model="newMovie.language" placeholder="语种" />
         <input v-model="newMovie.type" placeholder="类型 如 电影/动漫/电视剧" />
+        <input v-model="newMovie.image" placeholder="图片链接（可选）" />
         <button class="primary-btn tiny" type="button" @click="addMovie">添加</button>
-      </div>
-      <div v-if="showStats" class="form-grid stats-grid">
-        <div class="field">
-          <label>电影题材</label>
-          <div class="tag-row">
-            <span v-for="item in stats.genres" :key="item.label" class="tag">
-              {{ item.label }} · {{ item.count }}
-            </span>
-          </div>
-        </div>
-        <div class="field">
-          <label>语种</label>
-          <div class="tag-row">
-            <span v-for="item in stats.languages" :key="item.label" class="tag">
-              {{ item.label }} · {{ item.count }}
-            </span>
-          </div>
-        </div>
-        <div class="field">
-          <label>类型</label>
-          <div class="tag-row">
-            <span v-for="item in stats.types" :key="item.label" class="tag">
-              {{ item.label }} · {{ item.count }}
-            </span>
-          </div>
-        </div>
       </div>
 
       <div class="section-title" style="margin-top: 16px">
