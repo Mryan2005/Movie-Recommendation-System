@@ -326,6 +326,9 @@ const openDetail = (type, item) => {
   } else if (type === 'cos') {
     detail.subtitle = '想 cos 的角色'
     detail.meta = item.from
+  } else if (type === 'movie') {
+    detail.subtitle = '看过且喜欢的电影'
+    detail.meta = [item.genre, item.language, item.type].filter(Boolean).join(' · ')
   }
   detailModal.value = detail
 }
@@ -438,9 +441,6 @@ const closeDetail = () => {
             :key="lang.name"
             class="pill-card"
             :title="`语种：${lang.name}`"
-            role="button"
-            tabindex="0"
-            @click="openDetail('language', lang)"
           >
             <div class="thumb small" :style="{ backgroundImage: `url(${lang.image})` }"></div>
             <span>{{ lang.name }}</span>
@@ -603,6 +603,9 @@ const closeDetail = () => {
           :key="movie.title"
           class="list-item"
           :title="`${movie.title} · ${movie.genre} · ${movie.language} · ${movie.type}`"
+          role="button"
+          tabindex="0"
+          @click="openDetail('movie', movie)"
         >
           <div class="row">
             <div class="thumb large" :style="{ backgroundImage: `url(${movie.image})` }"></div>
@@ -613,7 +616,7 @@ const closeDetail = () => {
           </div>
           <div class="inline-actions">
             <span class="status-dot success"></span>
-            <button class="ghost-btn tiny" type="button" @click="removeMovie(index)">移除</button>
+            <button class="ghost-btn tiny" type="button" @click.stop="removeMovie(index)">移除</button>
           </div>
         </li>
       </ul>
@@ -662,7 +665,9 @@ const closeDetail = () => {
 
   <div v-if="detailModal" class="detail-backdrop" @click.self="closeDetail">
     <div class="detail-modal">
-      <button class="ghost-btn tiny close-btn" type="button" @click="closeDetail">关闭</button>
+      <button class="close-btn" type="button" aria-label="关闭" @click="closeDetail">
+        <span aria-hidden="true">×</span>
+      </button>
       <div class="detail-header">
         <div class="thumb large" :style="{ backgroundImage: detailModal.image ? `url(${detailModal.image})` : '' }"></div>
         <div>
