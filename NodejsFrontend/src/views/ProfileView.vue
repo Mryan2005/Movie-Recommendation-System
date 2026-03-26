@@ -242,6 +242,7 @@ const showLanguageEditor = ref(false)
 const showRoleEditor = ref(false)
 const showCosEditor = ref(false)
 const showMovieEditor = ref(false)
+const detailModal = ref(null)
 
 const barWidth = (list, count) => {
   const max = Math.max(...(list?.map((i) => i.count) || [1]), 1)
@@ -306,6 +307,32 @@ const addMovie = () => {
 }
 
 const removeMovie = (index) => likedMovies.value.splice(index, 1)
+
+const openDetail = (type, item) => {
+  if (!item) return
+  const detail = {
+    image: item.image || '',
+    title: item.name || item.title,
+    subtitle: '',
+    meta: '',
+  }
+  if (type === 'actor') {
+    detail.subtitle = '喜欢的演员'
+  } else if (type === 'language') {
+    detail.subtitle = '喜欢的语种'
+  } else if (type === 'role') {
+    detail.subtitle = '喜欢的角色'
+    detail.meta = item.from
+  } else if (type === 'cos') {
+    detail.subtitle = '想 cos 的角色'
+    detail.meta = item.from
+  }
+  detailModal.value = detail
+}
+
+const closeDetail = () => {
+  detailModal.value = null
+}
 </script>
 
 <template>
@@ -375,10 +402,13 @@ const removeMovie = (index) => likedMovies.value.splice(index, 1)
             :key="actor.name"
             class="pill-card"
             :title="`演员：${actor.name}`"
+            role="button"
+            tabindex="0"
+            @click="openDetail('actor', actor)"
           >
             <div class="thumb small" :style="{ backgroundImage: `url(${actor.image})` }"></div>
             <span>{{ actor.name }}</span>
-            <button class="ghost-btn tiny" type="button" @click="removeActor(index)">移除</button>
+            <button class="ghost-btn tiny" type="button" @click.stop="removeActor(index)">移除</button>
           </div>
         </div>
         <div v-if="showActorEditor" class="edit-popover">
@@ -408,10 +438,13 @@ const removeMovie = (index) => likedMovies.value.splice(index, 1)
             :key="lang.name"
             class="pill-card"
             :title="`语种：${lang.name}`"
+            role="button"
+            tabindex="0"
+            @click="openDetail('language', lang)"
           >
             <div class="thumb small" :style="{ backgroundImage: `url(${lang.image})` }"></div>
             <span>{{ lang.name }}</span>
-            <button class="ghost-btn tiny" type="button" @click="removeLanguage(index)">移除</button>
+            <button class="ghost-btn tiny" type="button" @click.stop="removeLanguage(index)">移除</button>
           </div>
         </div>
         <div v-if="showLanguageEditor" class="edit-popover">
@@ -441,13 +474,16 @@ const removeMovie = (index) => likedMovies.value.splice(index, 1)
             :key="role.name"
             class="pill-card"
             :title="`角色：${role.name} · 来自：${role.from}`"
+            role="button"
+            tabindex="0"
+            @click="openDetail('role', role)"
           >
             <div class="thumb small" :style="{ backgroundImage: `url(${role.image})` }"></div>
             <div>
               <div>{{ role.name }}</div>
               <p class="muted">{{ role.from }}</p>
             </div>
-            <button class="ghost-btn tiny" type="button" @click="removeRole(index)">移除</button>
+            <button class="ghost-btn tiny" type="button" @click.stop="removeRole(index)">移除</button>
           </div>
         </div>
         <div v-if="showRoleEditor" class="edit-popover">
@@ -481,13 +517,16 @@ const removeMovie = (index) => likedMovies.value.splice(index, 1)
             :key="role.name"
             class="pill-card"
             :title="`角色：${role.name} · 来自：${role.from}`"
+            role="button"
+            tabindex="0"
+            @click="openDetail('cos', role)"
           >
             <div class="thumb small" :style="{ backgroundImage: `url(${role.image})` }"></div>
             <div>
               <div>{{ role.name }}</div>
               <p class="muted">{{ role.from }}</p>
             </div>
-            <button class="ghost-btn tiny" type="button" @click="removeCos(index)">移除</button>
+            <button class="ghost-btn tiny" type="button" @click.stop="removeCos(index)">移除</button>
           </div>
         </div>
         <div v-if="showCosEditor" class="edit-popover">
@@ -618,6 +657,20 @@ const removeMovie = (index) => likedMovies.value.splice(index, 1)
           <span class="status-dot" :class="{ success: item.progress !== '待看' }"></span>
         </li>
       </ul>
+    </div>
+  </div>
+
+  <div v-if="detailModal" class="detail-backdrop" @click.self="closeDetail">
+    <div class="detail-modal">
+      <button class="ghost-btn tiny close-btn" type="button" @click="closeDetail">关闭</button>
+      <div class="detail-header">
+        <div class="thumb large" :style="{ backgroundImage: detailModal.image ? `url(${detailModal.image})` : '' }"></div>
+        <div>
+          <p class="muted">{{ detailModal.subtitle }}</p>
+          <h3 style="margin: 4px 0">{{ detailModal.title }}</h3>
+          <p class="muted" v-if="detailModal.meta">{{ detailModal.meta }}</p>
+        </div>
+      </div>
     </div>
   </div>
 </template>
