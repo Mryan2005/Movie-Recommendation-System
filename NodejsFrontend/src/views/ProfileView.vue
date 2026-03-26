@@ -238,6 +238,7 @@ const newLanguageImage = ref('')
 const newRole = ref({ name: '', from: '', image: '' })
 const newCos = ref({ name: '', from: '', image: '' })
 const newMovie = ref({ title: '', genre: '', language: '', type: '', image: '' })
+const addModal = ref(null)
 const showActorEditor = ref(false)
 const showLanguageEditor = ref(false)
 const showRoleEditor = ref(false)
@@ -256,22 +257,24 @@ const barWidth = (list, count) => {
 
 const addActor = () => {
   const name = newActorName.value.trim()
-  if (!name) return
+  if (!name) return false
   const image = newActorImage.value.trim() || createThumb(name)
   favoriteActors.value.push({ name, image })
   newActorName.value = ''
   newActorImage.value = ''
+  return true
 }
 
 const removeActor = (index) => favoriteActors.value.splice(index, 1)
 
 const addLanguage = () => {
   const name = newLanguageName.value.trim()
-  if (!name) return
+  if (!name) return false
   const image = newLanguageImage.value.trim() || createThumb(name)
   favoriteLanguages.value.push({ name, image })
   newLanguageName.value = ''
   newLanguageImage.value = ''
+  return true
 }
 
 const removeLanguage = (index) => favoriteLanguages.value.splice(index, 1)
@@ -279,10 +282,11 @@ const removeLanguage = (index) => favoriteLanguages.value.splice(index, 1)
 const addRole = () => {
   const name = newRole.value.name.trim()
   const from = newRole.value.from.trim()
-  if (!name || !from) return
+  if (!name || !from) return false
   const image = newRole.value.image.trim() || createThumb(name)
   favoriteRoles.value.push({ name, from, image })
   newRole.value = { name: '', from: '', image: '' }
+  return true
 }
 
 const removeRole = (index) => favoriteRoles.value.splice(index, 1)
@@ -290,17 +294,18 @@ const removeRole = (index) => favoriteRoles.value.splice(index, 1)
 const addCos = () => {
   const name = newCos.value.name.trim()
   const from = newCos.value.from.trim()
-  if (!name || !from) return
+  if (!name || !from) return false
   const image = newCos.value.image.trim() || createThumb(name)
   cosplayRoles.value.push({ name, from, image })
   newCos.value = { name: '', from: '', image: '' }
+  return true
 }
 
 const removeCos = (index) => cosplayRoles.value.splice(index, 1)
 
 const addMovie = () => {
   const { title, genre, language, type } = newMovie.value
-  if (!title.trim() || !genre.trim() || !language.trim() || !type.trim()) return
+  if (!title.trim() || !genre.trim() || !language.trim() || !type.trim()) return false
   likedMovies.value.push({
     title: title.trim(),
     genre: genre.trim(),
@@ -309,6 +314,7 @@ const addMovie = () => {
     image: newMovie.value.image.trim() || createThumb(title.trim()),
   })
   newMovie.value = { title: '', genre: '', language: '', type: '', image: '' }
+  return true
 }
 
 const removeMovie = (index) => likedMovies.value.splice(index, 1)
@@ -340,6 +346,58 @@ const openDetail = (type, item) => {
 
 const closeDetail = () => {
   detailModal.value = null
+}
+
+const resetAddForm = (type) => {
+  if (type === 'actor') {
+    newActorName.value = ''
+    newActorImage.value = ''
+  } else if (type === 'language') {
+    newLanguageName.value = ''
+    newLanguageImage.value = ''
+  } else if (type === 'role') {
+    newRole.value = { name: '', from: '', image: '' }
+  } else if (type === 'cos') {
+    newCos.value = { name: '', from: '', image: '' }
+  } else if (type === 'movie') {
+    newMovie.value = { title: '', genre: '', language: '', type: '', image: '' }
+  }
+}
+
+const openAdd = (type) => {
+  resetAddForm(type)
+  addModal.value = type
+}
+
+const closeAdd = () => {
+  addModal.value = null
+}
+
+const addModalTitle = computed(() => {
+  if (!addModal.value) return ''
+  const map = {
+    actor: '添加演员',
+    language: '添加语种',
+    role: '添加角色',
+    cos: '添加想 cos 的角色',
+    movie: '添加电影',
+  }
+  return map[addModal.value] || ''
+})
+
+const handleAddConfirm = () => {
+  const type = addModal.value
+  if (!type) return
+  const map = {
+    actor: addActor,
+    language: addLanguage,
+    role: addRole,
+    cos: addCos,
+    movie: addMovie,
+  }
+  const fn = map[type]
+  const success = fn?.()
+  if (success) closeAdd()
 }
 
 const openList = (type) => {
@@ -426,8 +484,9 @@ const listModalData = computed(() => {
           <h4>喜欢的演员</h4>
           <div class="section-actions">
             <button v-if="favoriteActors.length > 10" class="ghost-btn tiny" type="button" @click="openList('actor')">显示全部</button>
+            <button v-if="showActorEditor" class="ghost-btn tiny" type="button" @click="openAdd('actor')">添加</button>
             <button class="ghost-btn tiny" type="button" @click="showActorEditor = !showActorEditor">
-              {{ showActorEditor ? '收起编辑' : '编辑' }}
+              {{ showActorEditor ? '取消编辑' : '编辑' }}
             </button>
           </div>
         </div>
@@ -446,26 +505,16 @@ const listModalData = computed(() => {
             <button v-if="showActorEditor" class="ghost-btn tiny" type="button" @click.stop="removeActor(actor.idx)">移除</button>
           </div>
         </div>
-        <div v-if="showActorEditor" class="edit-popover">
-          <div class="field">
-            <label>演员姓名</label>
-            <input v-model="newActorName" placeholder="添加演员姓名" />
-          </div>
-          <div class="field">
-            <label>图片链接（可选）</label>
-            <input v-model="newActorImage" placeholder="图片链接（可选）" />
-          </div>
-          <div class="form-actions">
-            <button class="primary-btn tiny" type="button" @click="addActor">添加</button>
-          </div>
-        </div>
       </div>
       <div class="mini-card">
         <div class="section-head">
           <h4>喜欢的语种</h4>
-          <button class="ghost-btn tiny" type="button" @click="showLanguageEditor = !showLanguageEditor">
-            {{ showLanguageEditor ? '收起编辑' : '编辑' }}
-          </button>
+          <div class="section-actions">
+            <button v-if="showLanguageEditor" class="ghost-btn tiny" type="button" @click="openAdd('language')">添加</button>
+            <button class="ghost-btn tiny" type="button" @click="showLanguageEditor = !showLanguageEditor">
+              {{ showLanguageEditor ? '取消编辑' : '编辑' }}
+            </button>
+          </div>
         </div>
         <div class="avatar-grid">
           <div
@@ -478,19 +527,6 @@ const listModalData = computed(() => {
             <button v-if="showLanguageEditor" class="ghost-btn tiny" type="button" @click.stop="removeLanguage(index)">移除</button>
           </div>
         </div>
-        <div v-if="showLanguageEditor" class="edit-popover">
-          <div class="field">
-            <label>语种</label>
-            <input v-model="newLanguageName" placeholder="添加语种，如 英语/国语" />
-          </div>
-          <div class="field">
-            <label>图片链接（可选）</label>
-            <input v-model="newLanguageImage" placeholder="图片链接（可选）" />
-          </div>
-          <div class="form-actions">
-            <button class="primary-btn tiny" type="button" @click="addLanguage">添加</button>
-          </div>
-        </div>
       </div>
       <div class="mini-card">
         <div class="section-head">
@@ -499,8 +535,9 @@ const listModalData = computed(() => {
             <button v-if="favoriteRoles.length > 10" class="ghost-btn tiny" type="button" @click="openList('role')">
               显示全部
             </button>
+            <button v-if="showRoleEditor" class="ghost-btn tiny" type="button" @click="openAdd('role')">添加</button>
             <button class="ghost-btn tiny" type="button" @click="showRoleEditor = !showRoleEditor">
-              {{ showRoleEditor ? '收起编辑' : '编辑' }}
+              {{ showRoleEditor ? '取消编辑' : '编辑' }}
             </button>
           </div>
         </div>
@@ -522,23 +559,6 @@ const listModalData = computed(() => {
             <button v-if="showRoleEditor" class="ghost-btn tiny" type="button" @click.stop="removeRole(role.idx)">移除</button>
           </div>
         </div>
-        <div v-if="showRoleEditor" class="edit-popover">
-          <div class="field">
-            <label>角色名</label>
-            <input v-model="newRole.name" placeholder="角色名" />
-          </div>
-          <div class="field">
-            <label>来源/作品</label>
-            <input v-model="newRole.from" placeholder="来源/作品" />
-          </div>
-          <div class="field">
-            <label>图片链接（可选）</label>
-            <input v-model="newRole.image" placeholder="图片链接（可选）" />
-          </div>
-          <div class="form-actions">
-            <button class="primary-btn tiny" type="button" @click="addRole">添加</button>
-          </div>
-        </div>
       </div>
       <div class="mini-card">
         <div class="section-head">
@@ -547,8 +567,9 @@ const listModalData = computed(() => {
             <button v-if="cosplayRoles.length > 10" class="ghost-btn tiny" type="button" @click="openList('cos')">
               显示全部
             </button>
+            <button v-if="showCosEditor" class="ghost-btn tiny" type="button" @click="openAdd('cos')">添加</button>
             <button class="ghost-btn tiny" type="button" @click="showCosEditor = !showCosEditor">
-              {{ showCosEditor ? '收起编辑' : '编辑' }}
+              {{ showCosEditor ? '取消编辑' : '编辑' }}
             </button>
           </div>
         </div>
@@ -570,23 +591,6 @@ const listModalData = computed(() => {
             <button v-if="showCosEditor" class="ghost-btn tiny" type="button" @click.stop="removeCos(role.idx)">移除</button>
           </div>
         </div>
-        <div v-if="showCosEditor" class="edit-popover">
-          <div class="field">
-            <label>角色名</label>
-            <input v-model="newCos.name" placeholder="角色名" />
-          </div>
-          <div class="field">
-            <label>来源/作品</label>
-            <input v-model="newCos.from" placeholder="来源/作品" />
-          </div>
-          <div class="field">
-            <label>图片链接（可选）</label>
-            <input v-model="newCos.image" placeholder="图片链接（可选）" />
-          </div>
-          <div class="form-actions">
-            <button class="primary-btn tiny" type="button" @click="addCos">添加</button>
-          </div>
-        </div>
       </div>
 
       <div class="section-title stats-anchor" style="margin-top: 16px">
@@ -598,8 +602,9 @@ const listModalData = computed(() => {
           <button v-if="likedMovies.length > 5" class="ghost-btn tiny" type="button" @click="openList('movie')">
             显示全部
           </button>
+          <button v-if="showMovieEditor" class="ghost-btn tiny" type="button" @click="openAdd('movie')">添加</button>
           <button class="ghost-btn tiny" type="button" @click="showMovieEditor = !showMovieEditor">
-            {{ showMovieEditor ? '收起编辑' : '编辑' }}
+            {{ showMovieEditor ? '取消编辑' : '编辑' }}
           </button>
           <button class="ghost-btn tiny" type="button" @click="showStats = !showStats">
             {{ showStats ? '收起统计' : '查看统计' }}
@@ -664,14 +669,6 @@ const listModalData = computed(() => {
           </div>
         </li>
       </ul>
-      <div v-if="showMovieEditor" class="inline-form">
-        <input v-model="newMovie.title" placeholder="电影名" />
-        <input v-model="newMovie.genre" placeholder="题材" />
-        <input v-model="newMovie.language" placeholder="语种" />
-        <input v-model="newMovie.type" placeholder="类型 如 电影/动漫/电视剧" />
-        <input v-model="newMovie.image" placeholder="图片链接（可选）" />
-        <button class="primary-btn tiny" type="button" @click="addMovie">添加</button>
-      </div>
 
       <div class="section-title" style="margin-top: 16px">
         <div>
@@ -704,6 +701,91 @@ const listModalData = computed(() => {
           <span class="status-dot" :class="{ success: item.progress !== '待看' }"></span>
         </li>
       </ul>
+    </div>
+  </div>
+
+  <div v-if="addModal" class="detail-backdrop" @click.self="closeAdd">
+    <div class="detail-modal">
+      <button class="close-btn" type="button" aria-label="关闭" @click="closeAdd">
+        <span aria-hidden="true">×</span>
+      </button>
+      <h3 style="margin-top: 0">{{ addModalTitle }}</h3>
+      <div class="form-grid">
+        <template v-if="addModal === 'actor'">
+          <div class="field">
+            <label>演员姓名</label>
+            <input v-model="newActorName" placeholder="添加演员姓名" />
+          </div>
+          <div class="field">
+            <label>图片链接（可选）</label>
+            <input v-model="newActorImage" placeholder="图片链接（可选）" />
+          </div>
+        </template>
+        <template v-else-if="addModal === 'language'">
+          <div class="field">
+            <label>语种</label>
+            <input v-model="newLanguageName" placeholder="添加语种，如 英语/国语" />
+          </div>
+          <div class="field">
+            <label>图片链接（可选）</label>
+            <input v-model="newLanguageImage" placeholder="图片链接（可选）" />
+          </div>
+        </template>
+        <template v-else-if="addModal === 'role'">
+          <div class="field">
+            <label>角色名</label>
+            <input v-model="newRole.name" placeholder="角色名" />
+          </div>
+          <div class="field">
+            <label>来源/作品</label>
+            <input v-model="newRole.from" placeholder="来源/作品" />
+          </div>
+          <div class="field">
+            <label>图片链接（可选）</label>
+            <input v-model="newRole.image" placeholder="图片链接（可选）" />
+          </div>
+        </template>
+        <template v-else-if="addModal === 'cos'">
+          <div class="field">
+            <label>角色名</label>
+            <input v-model="newCos.name" placeholder="角色名" />
+          </div>
+          <div class="field">
+            <label>来源/作品</label>
+            <input v-model="newCos.from" placeholder="来源/作品" />
+          </div>
+          <div class="field">
+            <label>图片链接（可选）</label>
+            <input v-model="newCos.image" placeholder="图片链接（可选）" />
+          </div>
+        </template>
+        <template v-else-if="addModal === 'movie'">
+          <div class="field">
+            <label>电影名</label>
+            <input v-model="newMovie.title" placeholder="电影名" />
+          </div>
+          <div class="field">
+            <label>题材</label>
+            <input v-model="newMovie.genre" placeholder="题材" />
+          </div>
+          <div class="field">
+            <label>语种</label>
+            <input v-model="newMovie.language" placeholder="语种" />
+          </div>
+          <div class="field">
+            <label>类型</label>
+            <input v-model="newMovie.type" placeholder="类型 如 电影/动漫/电视剧" />
+          </div>
+          <div class="field">
+            <label>图片链接（可选）</label>
+            <input v-model="newMovie.image" placeholder="图片链接（可选）" />
+          </div>
+        </template>
+      </div>
+      <div class="form-actions">
+        <button class="primary-btn" type="button" @click="handleAddConfirm">添加</button>
+        <button class="ghost-btn" type="button" @click="closeAdd">取消</button>
+      </div>
     </div>
   </div>
 
