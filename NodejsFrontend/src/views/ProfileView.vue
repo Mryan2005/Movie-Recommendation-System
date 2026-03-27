@@ -119,7 +119,7 @@ const favoriteRoles = ref([
   {
     name: '温迪',
     from: '原神',
-    image: createThumb('温迪', '#0ea5e9'),
+    image: 'https://github.com/Mryan2005/Movie-Recommendation-System/blob/main/imgs/venti.png?raw=true',
     summary: '蒙德城的风神芭巴托斯化身，以行吟诗人的身份游走人间，酷爱美酒与自由，是七神中最随性洒脱的一位，象征着风与自由的精神。',
     traits: ['自由奔放', '爱好美酒', '温柔善良', '风神化身'],
   },
@@ -168,14 +168,14 @@ const favoriteRoles = ref([
   {
     name: '卡提希娅',
     from: '鸣潮',
-    image: createThumb('卡提希娅', '#475569'),
+    image: 'https://github.com/Mryan2005/Movie-Recommendation-System/blob/main/imgs/Cartethyia.png?raw=true',
     summary: '《鸣潮》中的角色，以独特的气质与战斗风格受到玩家喜爱，在鸣潮的世界观中扮演着重要的角色，其背景故事充满深度。',
     traits: ['独特气质', '战斗力强', '故事深度'],
   },
   {
     name: '菲比',
     from: '鸣潮',
-    image: createThumb('菲比', '#1f2937'),
+    image: 'https://github.com/Mryan2005/Movie-Recommendation-System/blob/main/imgs/feibi.png?raw=true',
     summary: '《鸣潮》中的知名角色，活泼可爱的外表下隐藏着不为人知的力量与秘密，是鸣潮世界中深受玩家喜爱的人物之一。',
     traits: ['外表活泼', '隐藏力量', '可爱', '神秘'],
   },
@@ -196,7 +196,7 @@ const favoriteRoles = ref([
   {
     name: '派蒙',
     from: '原神',
-    image: createThumb('派蒙', '#475569'),
+    image: 'https://github.com/Mryan2005/Movie-Recommendation-System/blob/main/imgs/Paimon.jpg?raw=true',
     summary: '《原神》中旅行者的小伙伴，圆滚滚、爱吃饭的可爱精灵，外表幼小却常常承担向导的角色，是原神世界的标志性形象之一。',
     traits: ['爱吃饭', '可爱圆滚', '向导角色', '梗文化代表'],
   },
@@ -233,7 +233,7 @@ const cosplayRoles = ref([
   {
     name: '温迪',
     from: '原神',
-    image: createThumb('温迪', '#0ea5e9'),
+    image: 'https://github.com/Mryan2005/Movie-Recommendation-System/blob/main/imgs/venti.png?raw=true',
     summary: '蒙德城的风神芭巴托斯化身，以行吟诗人的身份游走人间，酷爱美酒与自由，是七神中最随性洒脱的一位，象征着风与自由的精神。',
     traits: ['自由奔放', '爱好美酒', '温柔善良', '风神化身'],
   },
