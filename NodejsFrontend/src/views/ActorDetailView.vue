@@ -1,33 +1,24 @@
 <script setup>
-import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
+import { ref, computed, onMounted, onBeforeUnmount, watch, nextTick } from 'vue'
 import { useRouter } from 'vue-router'
+import { defaultActor } from '../data/actorProfiles'
 
 const router = useRouter()
+const props = defineProps({
+  actor: {
+    type: Object,
+    default: () => defaultActor,
+  },
+  inline: {
+    type: Boolean,
+    default: false,
+  },
+})
+const emit = defineEmits(['close'])
+const modalRef = ref(null)
+const closeBtnRef = ref(null)
 
-const createThumb = (label, color = '#1e3a8a') =>
-  `data:image/svg+xml,${encodeURIComponent(
-    `<svg xmlns='http://www.w3.org/2000/svg' width='140' height='180'><rect width='100%' height='100%' rx='12' fill='${color}'/><text x='50%' y='52%' dominant-baseline='middle' text-anchor='middle' fill='white' font-size='22' font-family='Inter, sans-serif'>${label}</text></svg>`
-  )}`
-
-const actor = {
-  id: 'paul',
-  name: '蒂莫西·柴勒梅德',
-  enName: 'Timothée Chalamet',
-  nationality: '美国',
-  birthdate: '1995-12-27',
-  birthplace: '美国纽约',
-  occupation: '演员',
-  bio: '出生于纽约，曾就读哥伦比亚大学戏剧系，2017 年以《请以你的名字呼唤我》一举成名，成为当时最年轻的奥斯卡影帝提名者之一。凭借细腻而充满张力的表演风格，在科幻史诗与文艺片中均有亮眼表现，是新生代演员的代表人物。',
-  highlights: ['银幕张力强', '青年偶像', '角色塑造细腻', '奥斯卡提名'],
-  image: createThumb('柴', '#1e3a8a'),
-  films: [
-    { title: '沙丘2', year: 2024, role: '保罗·厄崔迪' },
-    { title: '旺卡', year: 2023, role: '旺卡' },
-    { title: '沙丘', year: 2021, role: '保罗·厄崔迪' },
-    { title: '小妇人', year: 2019, role: '劳里' },
-    { title: '请以你的名字呼唤我', year: 2017, role: '以利奥' },
-  ],
-}
+const actor = computed(() => props.actor || defaultActor)
 
 const comments = ref([
   { user: 'Echo', rating: 5, text: '在沙丘中的成长线非常打动我。', time: '2 小时前' },
@@ -103,19 +94,59 @@ const modalStyle = computed(() => ({
 
 onMounted(() => {
   modalSize.value = clampSize(DEFAULT_SIZE.width, DEFAULT_SIZE.height)
+  focusModal()
 })
 
 onBeforeUnmount(() => {
   stopResizeListeners()
 })
 
-const close = () => router.back()
+const close = () => {
+  if (props.inline) {
+    emit('close')
+    return
+  }
+  router.back()
+}
+
+const handleKeydown = (event) => {
+  if (!props.inline || event.key !== 'Tab') return
+  const focusable = modalRef.value?.querySelectorAll(
+    'button, [href], input, textarea, select, [tabindex]:not([tabindex="-1"])'
+  )
+  if (!focusable || focusable.length === 0) return
+  const first = focusable[0]
+  const last = focusable[focusable.length - 1]
+  if (event.shiftKey) {
+    if (document.activeElement === first) {
+      event.preventDefault()
+      last.focus()
+    }
+  } else if (document.activeElement === last) {
+    event.preventDefault()
+    first.focus()
+  }
+}
+
+const focusModal = () => {
+  if (!props.inline) return
+  nextTick(() => {
+    closeBtnRef.value?.focus?.()
+  })
+}
+
+watch(
+  () => (props.inline ? props.actor : null),
+  (val) => {
+    if (val) focusModal()
+  }
+)
 </script>
 
 <template>
   <div class="detail-backdrop">
-    <div class="detail-modal actor-detail-modal" :style="modalStyle">
-      <button class="close-btn" type="button" aria-label="关闭" @click="close">
+    <div ref="modalRef" class="detail-modal actor-detail-modal" :style="modalStyle" @keydown="handleKeydown">
+      <button ref="closeBtnRef" class="close-btn" type="button" aria-label="关闭" @click="close">
         <span aria-hidden="true">×</span>
       </button>
 
