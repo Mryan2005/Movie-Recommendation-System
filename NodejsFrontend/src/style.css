@@ -17,6 +17,7 @@
   --z-modal-list: 38;
   --z-modal-add: 42;
   --z-modal-detail: 46;
+  --z-modal-stats: 44;
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
   color: var(--text);
   background: var(--bg);
@@ -702,6 +703,7 @@ a {
 .detail-backdrop.list-layer { z-index: var(--z-modal-list); }
 .detail-backdrop.add-layer { z-index: var(--z-modal-add); }
 .detail-backdrop.detail-layer { z-index: var(--z-modal-detail); }
+.detail-backdrop.stats-layer { z-index: var(--z-modal-stats); }
 
 .detail-modal {
   /*
@@ -761,6 +763,14 @@ a {
   width: min(560px, 94vw);
   max-height: 80vh;
   overflow: auto;
+}
+
+.stats-modal {
+  width: min(620px, 92vw);
+  max-height: 80vh;
+  overflow: auto;
+  display: grid;
+  gap: 12px;
 }
 
 .list-modal-head {
