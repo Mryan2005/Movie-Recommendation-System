@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
 
 const createThumb = (label, color = '#334155') =>
   `data:image/svg+xml,${encodeURIComponent(
@@ -239,6 +239,11 @@ const newRole = ref({ name: '', from: '', image: '' })
 const newCos = ref({ name: '', from: '', image: '' })
 const newMovie = ref({ title: '', genre: '', language: '', type: '', image: '' })
 const addModal = ref(null)
+const DEFAULT_MODAL_SIZE = { width: 911, height: 568 }
+const modalSize = ref({ ...DEFAULT_MODAL_SIZE })
+const resizeState = ref({ active: false, startX: 0, startY: 0, startW: DEFAULT_MODAL_SIZE.width, startH: DEFAULT_MODAL_SIZE.height })
+const MIN_SIZE = { width: 620, height: 360 }
+const MAX_SIZE = { width: 1200, height: 800 }
 const showActorEditor = ref(false)
 const showLanguageEditor = ref(false)
 const showRoleEditor = ref(false)
@@ -321,6 +326,7 @@ const removeMovie = (index) => likedMovies.value.splice(index, 1)
 
 const openDetail = (type, item) => {
   if (!item) return
+  resetModalSize()
   const detail = {
     image: item.image || '',
     title: item.name || item.title,
@@ -348,6 +354,61 @@ const closeDetail = () => {
   detailModal.value = null
 }
 
+const clampModalSize = (width, height) => {
+  const maxWidth = typeof window !== 'undefined' ? Math.min(MAX_SIZE.width, window.innerWidth - 32) : MAX_SIZE.width
+  const maxHeight = typeof window !== 'undefined' ? Math.min(MAX_SIZE.height, window.innerHeight - 32) : MAX_SIZE.height
+  return {
+    width: Math.min(Math.max(width, MIN_SIZE.width), Math.max(maxWidth, MIN_SIZE.width)),
+    height: Math.min(Math.max(height, MIN_SIZE.height), Math.max(maxHeight, MIN_SIZE.height)),
+  }
+}
+
+const resetModalSize = () => {
+  modalSize.value = clampModalSize(DEFAULT_MODAL_SIZE.width, DEFAULT_MODAL_SIZE.height)
+}
+
+const handleResizeMove = (event) => {
+  if (!resizeState.value.active) return
+  const deltaX = event.clientX - resizeState.value.startX
+  const deltaY = event.clientY - resizeState.value.startY
+  modalSize.value = clampModalSize(resizeState.value.startW + deltaX, resizeState.value.startH + deltaY)
+}
+
+const stopResizeListeners = () => {
+  if (typeof window === 'undefined') return
+  window.removeEventListener('mousemove', handleResizeMove)
+  window.removeEventListener('mouseup', stopResize)
+}
+
+const stopResize = () => {
+  resizeState.value.active = false
+  stopResizeListeners()
+}
+
+const startResize = (event) => {
+  event.preventDefault()
+  resizeState.value = {
+    active: true,
+    startX: event.clientX,
+    startY: event.clientY,
+    startW: modalSize.value.width,
+    startH: modalSize.value.height,
+  }
+  if (typeof window !== 'undefined') {
+    window.addEventListener('mousemove', handleResizeMove)
+    window.addEventListener('mouseup', stopResize)
+  }
+}
+
+const detailModalStyle = computed(() => ({
+  width: `${modalSize.value.width}px`,
+  height: `${modalSize.value.height}px`,
+  background: 'rgba(42, 130, 228, 1)',
+  opacity: 1,
+  borderRadius: '17.5px',
+  color: '#fff',
+}))
+
 const resetAddForm = (type) => {
   if (type === 'actor') {
     newActorName.value = ''
@@ -366,6 +427,7 @@ const resetAddForm = (type) => {
 
 const openAdd = (type) => {
   resetAddForm(type)
+  resetModalSize()
   addModal.value = type
 }
 
@@ -401,6 +463,7 @@ const handleAddConfirm = () => {
 }
 
 const openList = (type) => {
+  resetModalSize()
   listModal.value = type
 }
 
@@ -422,6 +485,14 @@ const listModalData = computed(() => {
     ...result,
     items: result.items.map((item, idx) => ({ item, idx })),
   }
+})
+
+onMounted(() => {
+  resetModalSize()
+})
+
+onBeforeUnmount(() => {
+  stopResizeListeners()
 })
 </script>
 
@@ -705,7 +776,7 @@ const listModalData = computed(() => {
   </div>
 
   <div v-if="addModal" class="detail-backdrop" @click.self="closeAdd">
-    <div class="detail-modal">
+    <div class="detail-modal" :style="detailModalStyle">
       <button class="close-btn" type="button" aria-label="关闭" @click="closeAdd">
         <span aria-hidden="true">×</span>
       </button>
@@ -786,11 +857,12 @@ const listModalData = computed(() => {
         <button class="primary-btn" type="button" @click="handleAddConfirm">添加</button>
         <button class="ghost-btn" type="button" @click="closeAdd">取消</button>
       </div>
+      <div class="resize-handle" @mousedown="startResize"></div>
     </div>
   </div>
 
   <div v-if="detailModal" class="detail-backdrop" @click.self="closeDetail">
-    <div class="detail-modal">
+    <div class="detail-modal" :style="detailModalStyle">
       <button class="close-btn" type="button" aria-label="关闭" @click="closeDetail">
         <span aria-hidden="true">×</span>
       </button>
@@ -801,11 +873,12 @@ const listModalData = computed(() => {
           <p class="muted" v-if="detailModal.meta">{{ detailModal.meta }}</p>
         </div>
       </div>
+      <div class="resize-handle" @mousedown="startResize"></div>
     </div>
   </div>
 
   <div v-if="listModalData" class="detail-backdrop" @click.self="closeList">
-    <div class="detail-modal list-modal">
+    <div class="detail-modal list-modal" :style="detailModalStyle">
       <button class="close-btn" type="button" aria-label="关闭" @click="closeList">
         <span aria-hidden="true">×</span>
       </button>
@@ -885,6 +958,7 @@ const listModalData = computed(() => {
           </ul>
         </template>
       </div>
+      <div class="resize-handle" @mousedown="startResize"></div>
     </div>
   </div>
 </template>
