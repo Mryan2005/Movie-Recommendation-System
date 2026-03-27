@@ -685,15 +685,47 @@ a {
 .detail-backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(15, 23, 42, 0.4);
+  background: rgba(8, 18, 40, 0.42);
   display: grid;
   place-items: center;
   z-index: 40;
   padding: 16px;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
 }
 
 .detail-modal {
-  background: rgba(42, 130, 228, 1);
+  /*
+   * ── Liquid glass ──────────────────────────────────────────
+   * Four stacked gradient layers simulate:
+   *  1. top-edge gloss (white sheen)
+   *  2. bottom-edge subtle deepening
+   *  3. left refraction band (light scatter)
+   *  4. main blue-tinted glass body
+   * ─────────────────────────────────────────────────────────
+   */
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.26) 0%,
+      rgba(255, 255, 255, 0.00) 38%
+    ),
+    linear-gradient(
+      0deg,
+      rgba(0, 0, 0, 0.16) 0%,
+      transparent 28%
+    ),
+    linear-gradient(
+      90deg,
+      rgba(130, 195, 255, 0.22) 0%,
+      transparent 32%
+    ),
+    linear-gradient(
+      148deg,
+      rgba(110, 175, 255, 0.44) 0%,
+      rgba(42, 130, 228, 0.56) 48%,
+      rgba(18, 72, 190, 0.66) 100%
+    );
   opacity: 1;
   color: #fff;
   border-radius: 17.5px;
@@ -702,12 +734,24 @@ a {
   height: auto;
   max-width: 94vw;
   max-height: 90vh;
+
+  /* Deep frosted-glass blur with saturation + brightness boost */
+  backdrop-filter: blur(32px) saturate(200%) brightness(1.08);
+  -webkit-backdrop-filter: blur(32px) saturate(200%) brightness(1.08);
+
+  /* Glass edges: luminous top edge, subtle sides */
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-top-color: rgba(255, 255, 255, 0.52);
+
+  /* Layered shadows: elevation · blue glow · top specular · bottom thickness · side rim */
   box-shadow:
-    0 30px 60px rgba(15, 23, 42, 0.18),
-    0 0 0 1px rgba(255, 255, 255, 0.35) inset;
+    0 28px 70px rgba(15, 23, 42, 0.55),
+    0 6px 28px rgba(42, 130, 228, 0.30),
+    inset 0 1.5px 0 rgba(255, 255, 255, 0.55),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.20),
+    inset 1.5px 0 0 rgba(255, 255, 255, 0.10);
+
   position: relative;
-  border: 1px solid rgba(148, 163, 184, 0.35);
-  backdrop-filter: blur(12px);
 }
 
 .list-modal {
