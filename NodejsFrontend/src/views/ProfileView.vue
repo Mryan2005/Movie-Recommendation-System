@@ -74,6 +74,56 @@ const likedMovies = ref([
     director: '招振强',
     summary: '许文强与冯程程的乱世情缘，在上海滩的枪林弹雨与权谋角力中展开，是华语电视剧史上最经典的民国传奇，主题曲《上海滩》至今传唱不衰。',
   },
+  {
+    title: '文豪野犬',
+    genre: '动画，悬疑',
+    language: '日语',
+    type: '电视剧',
+    image: createThumb('文豪野犬', '#475569'),
+    year: 2016,
+    director: '五十嵐卓哉',
+    summary: '以太宰治、芥川龙之介等文豪为主角的原创故事，融合了悬疑与超能力元素，展现了文豪们在现代社会中的奋斗与成长。',
+  },
+  {
+    title: '文豪野犬 第二季',
+    genre: '动画，悬疑',
+    language: '日语',
+    type: '电视剧',
+    image: createThumb('文豪野犬 第二季', '#475569'),
+    year: 2016,
+    director: '五十嵐卓哉',
+    summary: '《文豪野犬 第二季》继续讲述文豪们在现代社会中的奋斗与成长，融入更多悬疑与超能力元素，带来全新的故事体验。',
+  },
+  {
+    title: '文豪野犬 第三季',
+    genre: '动画，悬疑', 
+    language: '日语',
+    type: '电视剧',
+    image: createThumb('文豪野犬 第三季', '#475569'),
+    year: 2019,
+    director: '五十嵐卓哉',
+    summary: '《文豪野犬 第三季》继续深入文豪们的内心世界，探讨他们在现代社会中的挣扎与成长，融入更多悬疑与超能力元素，带来全新的故事体验。',
+  },
+  {
+    title: '文豪野犬 第四季',
+    genre: '动画，悬疑',
+    language: '日语',
+    type: '电视剧',
+    image: createThumb('文豪野犬 第四季', '#475569'),
+    year: 2023,
+    director: '五十嵐卓哉',
+    summary: '《文豪野犬 第四季》继续探索文豪们的内心世界，揭示他们在现代社会中的挣扎与成长，融入更多悬疑与超能力元素，带来全新的故事体验。',
+  },
+  {
+    title: '文豪野犬 第五季',
+    genre: '动画，悬疑',
+    language: '日语',
+    type: '电视剧',
+    image: createThumb('文豪野犬 第五季', '#475569'),
+    year: 2023,
+    director: '五十嵐卓哉',
+    summary: '《文豪野犬 第五季》继续讲述文豪们在现代社会中的奋斗与成长，融入更多悬疑与超能力元素，带来全新的故事体验。',
+  },
 ])
 
 const stats = computed(() => {
@@ -112,7 +162,7 @@ const favoriteRoles = ref([
   {
     name: '太宰治',
     from: '文豪野犬',
-    image: createThumb('太宰', '#475569'),
+    image: 'https://github.com/Mryan2005/Movie-Recommendation-System/blob/main/imgs/dazai.jpg?raw=true',
     summary: '武装侦探社干部，以"人间失格"为异能名，外表玩世不恭实则背负着深重的过去，在生死边缘游走，是《文豪野犬》中最复杂的角色之一。',
     traits: ['玩世不恭', '智谋深沉', '内心复杂', '反差萌'],
   },
@@ -147,7 +197,7 @@ const favoriteRoles = ref([
   {
     name: '东海帝王',
     from: 'Pretty Derby',
-    image: 'https://github.com/Mryan2005/Movie-Recommendation-System/blob/main/imgs/Tokai%20Teio.png?raw=true',
+    image: 'https://github.com/Mryan2005/Movie-Recommendation-System/blob/main/imgs/Tokai%20Teio.jpg?raw=true',
     summary: '《赛马娘 Pretty Derby》中的人气角色，以强大的竞技精神和粗犷帅气的外形著称，是一位不甘平凡、热血励志的赛马娘。',
     traits: ['热血励志', '竞技精神强', '粗犷帅气', '自强不息'],
   },
@@ -175,7 +225,7 @@ const favoriteRoles = ref([
   {
     name: '菲比',
     from: '鸣潮',
-    image: 'https://github.com/Mryan2005/Movie-Recommendation-System/blob/main/imgs/feibi.png?raw=true',
+    image: 'https://github.com/Mryan2005/Movie-Recommendation-System/blob/main/imgs/feibi.jpg?raw=true',
     summary: '《鸣潮》中的知名角色，活泼可爱的外表下隐藏着不为人知的力量与秘密，是鸣潮世界中深受玩家喜爱的人物之一。',
     traits: ['外表活泼', '隐藏力量', '可爱', '神秘'],
   },
@@ -208,11 +258,11 @@ const favoriteRoles = ref([
     traits: ['冷静聪慧', '神秘气质', '前组织成员', '反差萌'],
   },
   {
-    name: '夏洛克',
-    from: '神探夏洛克',
-    image: createThumb('SH', '#334155'),
-    summary: 'BBC剧集《神探夏洛克》中的现代版福尔摩斯，以超凡的推理能力与高冷怪咖性格著称，是21世纪最经典的侦探荧幕形象。',
-    traits: ['天才推理', '高冷怪咖', '现代福尔摩斯', '不走寻常路'],
+    name: '夏洛克·福尔摩斯',
+    from: '大侦探福尔摩斯',
+    image: 'https://github.com/Mryan2005/Movie-Recommendation-System/blob/main/imgs/Sherlock%20Holmes.jpg?raw=true',
+    summary: '阿瑟·柯南·道尔笔下的经典侦探角色，以超凡的推理能力和独特的个性著称，是文学史上最著名的侦探形象之一，影响了无数后续的侦探作品。',
+    traits: ['天才推理', '高冷怪咖', '经典侦探', '文学巨匠'],
   },
   {
     name: '憨豆先生',
@@ -229,6 +279,13 @@ const cosplayRoles = ref([
     image: 'https://github.com/Mryan2005/Movie-Recommendation-System/blob/main/imgs/Tsukishiro%20Yuki.png?raw=true',
     summary: '月代雪是《魔法少女的魔女审判》中的核心角色，外表清冷温柔却拥有坚定的内心，在魔法与审判的世界里始终坚守自己的信念与情感。',
     traits: ['清冷温柔', '内心坚定', '正义感强', '友情至上'],
+  },
+  {
+    name: '太宰治',
+    from: '文豪野犬',
+    image: 'https://github.com/Mryan2005/Movie-Recommendation-System/blob/main/imgs/dazai.jpg?raw=true',
+    summary: '武装侦探社干部，以"人间失格"为异能名，外表玩世不恭实则背负着深重的过去，在生死边缘游走，是《文豪野犬》中最复杂的角色之一。',
+    traits: ['玩世不恭', '智谋深沉', '内心复杂', '反差萌'],
   },
   {
     name: '温迪',
@@ -271,13 +328,6 @@ const cosplayRoles = ref([
     image: createThumb('憨豆', '#334155'),
     summary: '英国喜剧演员罗温·艾金森饰演的经典角色，以夸张的肢体语言和几乎不开口的无声喜剧风格享誉全球，是跨越语言文化的喜剧符号。',
     traits: ['无声喜剧', '肢体夸张', '跨文化喜剧符号', '经典形象'],
-  },
-  {
-    name: '夏洛克',
-    from: '神探夏洛克',
-    image: createThumb('SH', '#334155'),
-    summary: 'BBC剧集《神探夏洛克》中的现代版福尔摩斯，以超凡的推理能力与高冷怪咖性格著称，是21世纪最经典的侦探荧幕形象。',
-    traits: ['天才推理', '高冷怪咖', '现代福尔摩斯', '不走寻常路'],
   },
 ])
 const favoriteActors = ref([
@@ -560,7 +610,7 @@ const addModalTitle = computed(() => {
     language: '添加语种',
     role: '添加角色',
     cos: '添加想 cos 的角色',
-    movie: '添加电影',
+    movie: '添加影视',
   }
   return map[addModal.value] || ''
 })
@@ -595,7 +645,7 @@ const listModalData = computed(() => {
     actor: { title: '全部喜欢的演员', items: favoriteActors.value, type: 'actor' },
     role: { title: '全部喜欢的角色', items: favoriteRoles.value, type: 'role' },
     cos: { title: '全部想 cos 的角色', items: cosplayRoles.value, type: 'cos' },
-    movie: { title: '全部看过且喜欢的电影', items: likedMovies.value, type: 'movie' },
+    movie: { title: '全部看过且喜欢的影视', items: likedMovies.value, type: 'movie' },
   }
   const result = map[listModal.value]
   if (!result) return null
@@ -784,8 +834,8 @@ onBeforeUnmount(() => {
 
       <div class="section-title stats-anchor" style="margin-top: 16px">
         <div>
-          <h2>看过且喜欢的电影</h2>
-          <p>电影列表 & 数据统计</p>
+          <h2>看过且喜欢的影视</h2>
+          <p>影视列表 & 数据统计</p>
         </div>
         <div class="section-actions">
           <button v-if="likedMovies.length > 5" class="ghost-btn tiny" type="button" @click="openList('movie')">
@@ -801,7 +851,7 @@ onBeforeUnmount(() => {
         </div>
         <div v-if="showStats" class="stats-popover">
           <div class="field">
-            <label>电影题材</label>
+            <label>题材</label>
             <div class="bar-chart">
               <div v-for="item in stats.genres" :key="item.label" class="bar">
                 <span class="bar-label">{{ item.label }} · {{ item.count }}</span>
@@ -950,8 +1000,8 @@ onBeforeUnmount(() => {
         </template>
         <template v-else-if="addModal === 'movie'">
           <div class="field">
-            <label>电影名</label>
-            <input v-model="newMovie.title" placeholder="电影名" />
+            <label>影视名称</label>
+            <input v-model="newMovie.title" placeholder="影视名称" />
           </div>
           <div class="field">
             <label>题材</label>
