@@ -13,6 +13,10 @@
   --border: #e2e8f0;
   --rounded: 16px;
   --shadow: 0 12px 32px rgba(15, 23, 42, 0.08);
+  --z-modal-base: 40;
+  --z-modal-list: 38;
+  --z-modal-add: 42;
+  --z-modal-detail: 46;
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
   color: var(--text);
   background: var(--bg);
@@ -688,11 +692,16 @@ a {
   background: rgba(8, 18, 40, 0.42);
   display: grid;
   place-items: center;
-  z-index: 40;
+  z-index: var(--z-modal-base);
   padding: 16px;
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
 }
+
+/* Layering: list < base < add < detail to prevent overlapping controls */
+.detail-backdrop.list-layer { z-index: var(--z-modal-list); }
+.detail-backdrop.add-layer { z-index: var(--z-modal-add); }
+.detail-backdrop.detail-layer { z-index: var(--z-modal-detail); }
 
 .detail-modal {
   /*
@@ -759,6 +768,25 @@ a {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 12px;
+}
+
+.list-search {
+  margin: 8px 0 4px;
+}
+
+.list-search input {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: #f8fafc;
+  font-size: 14px;
+  outline: none;
+}
+
+.list-search input:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
 }
 
 .list-modal-body {
