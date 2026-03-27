@@ -30,6 +30,9 @@ const likedMovies = ref([
     language: '粤语',
     type: '电影',
     image: createThumb('少林足球', '#0ea5e9'),
+    year: 2001,
+    director: '周星驰',
+    summary: '一群怀揣绝技的少林弟子与落魄足球教练合力组队，凭借少林武功踢遍强敌，笑料百出又热血励志，是周星驰无厘头喜剧的巅峰之作之一。',
   },
   {
     title: '赌神',
@@ -37,6 +40,9 @@ const likedMovies = ref([
     language: '粤语',
     type: '电影',
     image: createThumb('赌神', '#1f2937'),
+    year: 1989,
+    director: '王晶',
+    summary: '周润发饰演赌神高进，因失忆而被人利用，最终凭借天赋与智慧重夺赌神宝座。影片将赌博技艺与情义江湖融为一体，是香港赌片的奠基之作。',
   },
   {
     title: '六福喜事',
@@ -44,6 +50,9 @@ const likedMovies = ref([
     language: '粤语',
     type: '电影',
     image: createThumb('六福喜事', '#475569'),
+    year: 1992,
+    director: '高志森',
+    summary: '香港贺岁喜剧经典，融合家庭温情与爆笑情节，展现香港市井生活的温暖与幽默，是本港电影文化的重要代表作之一。',
   },
   {
     title: '功夫',
@@ -51,6 +60,9 @@ const likedMovies = ref([
     language: '粤语',
     type: '电影',
     image: createThumb('功夫', '#7c3aed'),
+    year: 2004,
+    director: '周星驰',
+    summary: '以1940年代上海为背景，小混混阿星阴差阳错卷入帮派恩怨，最终觉醒武学天赋。周星驰将功夫、喜剧与热血融为一炉，视觉奇观与情感共鸣兼具。',
   },
   {
     title: '上海滩',
@@ -58,6 +70,9 @@ const likedMovies = ref([
     language: '粤语',
     type: '电视剧',
     image: createThumb('上海滩', '#475569'),
+    year: 1980,
+    director: '招振强',
+    summary: '许文强与冯程程的乱世情缘，在上海滩的枪林弹雨与权谋角力中展开，是华语电视剧史上最经典的民国传奇，主题曲《上海滩》至今传唱不衰。',
   },
 ])
 
@@ -84,91 +99,127 @@ const favoriteRoles = ref([
     name: '月代雪',
     from: '魔法少女的魔女审判',
     image: 'https://github.com/Mryan2005/Movie-Recommendation-System/blob/copilot/add-movie-recommendation-home-login-register/imgs/Tsukishiro%20Yuki.png?raw=true',
+    summary: '月代雪是《魔法少女的魔女审判》中的核心角色，外表清冷温柔却拥有坚定的内心，在魔法与审判的世界里始终坚守自己的信念与情感。',
+    traits: ['清冷温柔', '内心坚定', '正义感强', '友情至上'],
   },
   {
     name: '伊蕾娜',
     from: '魔女之旅',
     image: 'https://github.com/Mryan2005/Movie-Recommendation-System/blob/copilot/add-movie-recommendation-home-login-register/imgs/Elaina.jpg?raw=true',
+    summary: '灰发灰眸的独行魔女，才华横溢却略显孤傲，以旅行者的身份游历各地，经历了无数温柔与残酷交织的故事，是《魔女之旅》的精神内核。',
+    traits: ['独立自主', '才华横溢', '淡定从容', '灰发美少女'],
   },
   {
     name: '太宰治',
     from: '文豪野犬',
     image: createThumb('太宰', '#475569'),
+    summary: '武装侦探社干部，以"人间失格"为异能名，外表玩世不恭实则背负着深重的过去，在生死边缘游走，是《文豪野犬》中最复杂的角色之一。',
+    traits: ['玩世不恭', '智谋深沉', '内心复杂', '反差萌'],
   },
   {
     name: '温迪',
     from: '原神',
     image: createThumb('温迪', '#0ea5e9'),
+    summary: '蒙德城的风神芭巴托斯化身，以行吟诗人的身份游走人间，酷爱美酒与自由，是七神中最随性洒脱的一位，象征着风与自由的精神。',
+    traits: ['自由奔放', '爱好美酒', '温柔善良', '风神化身'],
   },
   {
     name: '白钰袖',
     from: '风灵玉秀',
     image: 'https://isaacsimplusros2.mryan2005.top/img/avatar.png',
+    summary: '《风灵玉秀》中的温婉角色，以灵秀的气质与深厚的情感深受喜爱，是一位在命运与情感中挣扎前行的少女形象。',
+    traits: ['温婉灵秀', '情感丰富', '坚韧不拔'],
   },
   {
     name: '朝武芳乃',
     from: '千恋万花',
     image: createThumb('朝武芳乃', '#7c3aed'),
+    summary: '《千恋万花》中的女主角之一，来自古老神社世家，外表传统端庄，内心温柔细腻，是日式传统美少女的典型形象。',
+    traits: ['传统端庄', '温柔细腻', '神社巫女', '家族责任'],
   },
   {
     name: '丛雨',
     from: '千恋万花',
     image: createThumb('丛雨', '#1f2937'),
+    summary: '《千恋万花》中的另一位主要角色，性格活泼可爱，偶有腹黑，与朝武芳乃形成鲜明对比，给故事增添了不少活力与趣味。',
+    traits: ['活泼可爱', '偶有腹黑', '元气满满', '反差萌'],
   },
   {
     name: '东海帝王',
     from: 'Pretty Derby',
     image: createThumb('东海帝王', '#475569'),
+    summary: '《赛马娘 Pretty Derby》中的人气角色，以强大的竞技精神和粗犷帅气的外形著称，是一位不甘平凡、热血励志的赛马娘。',
+    traits: ['热血励志', '竞技精神强', '粗犷帅气', '自强不息'],
   },
   {
     name: '秋川弥生',
     from: 'Pretty Derby',
     image: createThumb('秋川弥生', '#7c3aed'),
+    summary: '《赛马娘 Pretty Derby》中的训练师角色，以认真负责的工作态度和对赛马娘的深切关怀著称，是游戏中重要的支持角色。',
+    traits: ['认真负责', '关怀备至', '专业训练师', '温柔坚强'],
   },
   {
     name: '堂吉诃德',
     from: '堂吉诃德',
     image: createThumb('堂吉诃德', '#0ea5e9'),
+    summary: '塞万提斯笔下的经典文学角色，沉迷骑士小说的乡绅，骑着瘦马手持长矛行侠仗义，将风车当作巨人，是文学史上最著名的理想主义者形象。',
+    traits: ['理想主义', '骑士精神', '脱离现实', '文学经典'],
   },
   {
     name: '卡提希娅',
     from: '鸣潮',
     image: createThumb('卡提希娅', '#475569'),
+    summary: '《鸣潮》中的角色，以独特的气质与战斗风格受到玩家喜爱，在鸣潮的世界观中扮演着重要的角色，其背景故事充满深度。',
+    traits: ['独特气质', '战斗力强', '故事深度'],
   },
   {
     name: '菲比',
     from: '鸣潮',
     image: createThumb('菲比', '#1f2937'),
+    summary: '《鸣潮》中的知名角色，活泼可爱的外表下隐藏着不为人知的力量与秘密，是鸣潮世界中深受玩家喜爱的人物之一。',
+    traits: ['外表活泼', '隐藏力量', '可爱', '神秘'],
   },
   {
     name: '今汐',
     from: '鸣潮',
     image: createThumb('今汐', '#7c3aed'),
+    summary: '《鸣潮》中以优雅沉静著称的角色，拥有独特的水系能力，举止高雅，在鸣潮的世界观中是极具辨识度的人气角色。',
+    traits: ['优雅沉静', '水系能力', '高雅气质', '人气角色'],
   },
   {
     name: '彦卿',
     from: '崩坏：星穹铁道',
     image: createThumb('彦卿', '#0ea5e9'),
+    summary: '《崩坏：星穹铁道》中的高人气角色，以凌厉的剑法和高冷外表著称，背后藏着深厚的情感与故事，是米哈游旗下作品中极受欢迎的角色之一。',
+    traits: ['高冷剑客', '剑法凌厉', '内心深沉', '高人气'],
   },
   {
     name: '派蒙',
     from: '原神',
     image: createThumb('派蒙', '#475569'),
+    summary: '《原神》中旅行者的小伙伴，圆滚滚、爱吃饭的可爱精灵，外表幼小却常常承担向导的角色，是原神世界的标志性形象之一。',
+    traits: ['爱吃饭', '可爱圆滚', '向导角色', '梗文化代表'],
   },
   {
     name: '灰原哀',
     from: '名侦探柯南',
     image: createThumb('灰原', '#1f2937'),
+    summary: '《名侦探柯南》中的重要人物，原本是黑衣组织的科学家，服用APTX4869后变成小孩，以灰原哀之名与柯南共同行动，冷静聪慧，形象深入人心。',
+    traits: ['冷静聪慧', '神秘气质', '前组织成员', '反差萌'],
   },
   {
     name: '夏洛克',
     from: '神探夏洛克',
     image: createThumb('SH', '#334155'),
+    summary: 'BBC剧集《神探夏洛克》中的现代版福尔摩斯，以超凡的推理能力与高冷怪咖性格著称，是21世纪最经典的侦探荧幕形象。',
+    traits: ['天才推理', '高冷怪咖', '现代福尔摩斯', '不走寻常路'],
   },
   {
     name: '憨豆先生',
     from: '憨豆先生',
     image: createThumb('憨豆', '#334155'),
+    summary: '英国喜剧演员罗温·艾金森饰演的经典角色，以夸张的肢体语言和几乎不开口的无声喜剧风格享誉全球，是跨越语言文化的喜剧符号。',
+    traits: ['无声喜剧', '肢体夸张', '跨文化喜剧符号', '经典形象'],
   },
 ])
 const cosplayRoles = ref([
@@ -176,62 +227,153 @@ const cosplayRoles = ref([
     name: '月代雪',
     from: '魔法少女的魔女审判',
     image: 'https://github.com/Mryan2005/Movie-Recommendation-System/blob/copilot/add-movie-recommendation-home-login-register/imgs/Tsukishiro%20Yuki.png?raw=true',
+    summary: '月代雪是《魔法少女的魔女审判》中的核心角色，外表清冷温柔却拥有坚定的内心，在魔法与审判的世界里始终坚守自己的信念与情感。',
+    traits: ['清冷温柔', '内心坚定', '正义感强', '友情至上'],
   },
   {
     name: '温迪',
     from: '原神',
     image: createThumb('温迪', '#0ea5e9'),
+    summary: '蒙德城的风神芭巴托斯化身，以行吟诗人的身份游走人间，酷爱美酒与自由，是七神中最随性洒脱的一位，象征着风与自由的精神。',
+    traits: ['自由奔放', '爱好美酒', '温柔善良', '风神化身'],
   },
   {
     name: '白钰袖',
     from: '风灵玉秀',
     image: 'https://isaacsimplusros2.mryan2005.top/img/avatar.png',
+    summary: '《风灵玉秀》中的温婉角色，以灵秀的气质与深厚的情感深受喜爱，是一位在命运与情感中挣扎前行的少女形象。',
+    traits: ['温婉灵秀', '情感丰富', '坚韧不拔'],
   },
   {
     name: '朝武芳乃',
     from: '千恋万花',
     image: createThumb('朝武芳乃', '#7c3aed'),
+    summary: '《千恋万花》中的女主角之一，来自古老神社世家，外表传统端庄，内心温柔细腻，是日式传统美少女的典型形象。',
+    traits: ['传统端庄', '温柔细腻', '神社巫女', '家族责任'],
   },
   {
     name: '灰原哀',
     from: '名侦探柯南',
     image: createThumb('灰原', '#1f2937'),
+    summary: '《名侦探柯南》中的重要人物，原本是黑衣组织的科学家，服用APTX4869后变成小孩，以灰原哀之名与柯南共同行动，冷静聪慧，形象深入人心。',
+    traits: ['冷静聪慧', '神秘气质', '前组织成员', '反差萌'],
   },
   {
     name: '堂吉诃德',
     from: '堂吉诃德',
     image: createThumb('堂吉诃德', '#0ea5e9'),
+    summary: '塞万提斯笔下的经典文学角色，沉迷骑士小说的乡绅，骑着瘦马手持长矛行侠仗义，将风车当作巨人，是文学史上最著名的理想主义者形象。',
+    traits: ['理想主义', '骑士精神', '脱离现实', '文学经典'],
   },
   {
     name: '憨豆先生',
     from: '憨豆先生',
     image: createThumb('憨豆', '#334155'),
+    summary: '英国喜剧演员罗温·艾金森饰演的经典角色，以夸张的肢体语言和几乎不开口的无声喜剧风格享誉全球，是跨越语言文化的喜剧符号。',
+    traits: ['无声喜剧', '肢体夸张', '跨文化喜剧符号', '经典形象'],
   },
   {
     name: '夏洛克',
     from: '神探夏洛克',
     image: createThumb('SH', '#334155'),
+    summary: 'BBC剧集《神探夏洛克》中的现代版福尔摩斯，以超凡的推理能力与高冷怪咖性格著称，是21世纪最经典的侦探荧幕形象。',
+    traits: ['天才推理', '高冷怪咖', '现代福尔摩斯', '不走寻常路'],
   },
 ])
 const favoriteActors = ref([
   {
     name: '周星驰',
     image: createThumb('周星驰', '#7c3aed'),
+    bio: '香港著名喜剧演员、编剧与导演，以无厘头喜剧风格闻名华语影坛。代表作涵盖《大话西游》《少林足球》《功夫》《喜剧之王》等，是华语电影史上最具影响力的喜剧人之一。',
+    highlights: ['无厘头喜剧', '演而优则导', '港产片传奇', '国际知名'],
+    films: [
+      { title: '少林足球', year: 2001, role: '强雄' },
+      { title: '功夫', year: 2004, role: '阿星' },
+      { title: '大话西游之月光宝盒', year: 1995, role: '至尊宝' },
+      { title: '喜剧之王', year: 1999, role: '尹天仇' },
+    ],
   },
-  { name: '周润发', image: createThumb('周润发', '#0ea5e9') },
-  { name: '黄子华', image: createThumb('黄子华', '#1f2937') },
-  { name: '谢君豪', image: createThumb('谢君豪', '#475569') },
-  { name: '王志文', image: createThumb('王志文', '#334155') },
-  { name: '林栋甫', image: createThumb('林栋甫', '#475569') },
-  { name: '姜文', image: createThumb('姜文', '#475569') },
+  {
+    name: '周润发',
+    image: createThumb('周润发', '#0ea5e9'),
+    bio: '香港著名演员，以《英雄本色》一举成名，凭借《上海滩》《赌神》《监狱风云》等确立其影坛地位，后赴好莱坞主演多部国际电影，是亚洲最具国际影响力的华人演员之一。',
+    highlights: ['港产英雄片代表', '儒雅大气', '赌神形象深入人心', '国际影星'],
+    films: [
+      { title: '英雄本色', year: 1986, role: '小马哥' },
+      { title: '赌神', year: 1989, role: '高进' },
+      { title: '监狱风云', year: 1987, role: '阿正' },
+    ],
+  },
+  {
+    name: '黄子华',
+    image: createThumb('黄子华', '#1f2937'),
+    bio: '香港栋笃笑（单口喜剧）表演者、演员，以犀利幽默的社会观察著称，主演电影《饭戏攻心》打破香港票房纪录，深受本地观众喜爱。',
+    highlights: ['栋笃笑宗师', '社会观察犀利', '本土文化代表', '实力演员'],
+    films: [
+      { title: '饭戏攻心', year: 2022, role: '大哥' },
+      { title: '毒舌大状', year: 2023, role: '林涼水' },
+    ],
+  },
+  {
+    name: '谢君豪',
+    image: createThumb('谢君豪', '#475569'),
+    bio: '香港著名舞台剧与电影演员，凭借《南海十三郎》荣获香港电影金像奖最佳男主角，是香港舞台剧界最具代表性的演员之一。',
+    highlights: ['舞台剧大师', '金像影帝', '表演张力极强'],
+    films: [
+      { title: '南海十三郎', year: 1997, role: '唐涤生' },
+    ],
+  },
+  {
+    name: '王志文',
+    image: createThumb('王志文', '#334155'),
+    bio: '中国著名演员，以《围城》《年轮》等早期影视作品奠定地位，以其内敛沉稳的表演风格著称，是中国电视剧领域的实力派代表人物。',
+    highlights: ['内敛沉稳', '文艺气质', '实力派', '经典角色塑造'],
+    films: [
+      { title: '围城', year: 1990, role: '方鸿渐' },
+      { title: '年轮', year: 1994, role: '王雁' },
+    ],
+  },
+  {
+    name: '林栋甫',
+    image: createThumb('林栋甫', '#475569'),
+    bio: '香港知名性格演员，活跃于影视与舞台剧之间，以其稳健的表演功力与百变造型著称，是香港影视界不可或缺的配角人才。',
+    highlights: ['性格演员', '舞台影视两栖', '百变造型'],
+    films: [],
+  },
+  {
+    name: '姜文',
+    image: createThumb('姜文', '#475569'),
+    bio: '中国著名演员与导演，以《阳光灿烂的日子》《鬼子来了》《让子弹飞》等奠定其大师地位，表演风格强烈个性化，作品充满独特的历史与人文关怀。',
+    highlights: ['演导兼修', '强烈个人风格', '历史人文关怀', '影坛奇才'],
+    films: [
+      { title: '阳光灿烂的日子', year: 1994, role: '马小军' },
+      { title: '让子弹飞', year: 2010, role: '张牧之' },
+      { title: '鬼子来了', year: 2000, role: '马大三' },
+    ],
+  },
 ])
 
 const newActorName = ref('')
 const newActorImage = ref('')
 const favoriteLanguages = ref([
-  { name: '粤语', image: createThumb('粤', '#0ea5e9') },
-  { name: '国语', image: createThumb('中', '#7c3aed') },
-  { name: '英语', image: createThumb('EN', '#0ea5e9') },
+  {
+    name: '粤语',
+    image: createThumb('粤', '#0ea5e9'),
+    description: '广东话，香港与广东地区的母语，在影视作品中有着独特的韵律与文化底蕴。尤其港产片的粤语原声充满感染力，配音中蕴含的市井气与情义之美是其他语言难以复刻的。',
+    examples: ['少林足球', '赌神', '上海滩', '功夫', '无间道', '英雄本色'],
+  },
+  {
+    name: '国语',
+    image: createThumb('中', '#7c3aed'),
+    description: '普通话，中国大陆的通用语言，是华语电影与电视剧的主要语言，涵盖了大量优秀的文艺片与院线大作，是了解中国文化的重要窗口。',
+    examples: ['阳光灿烂的日子', '让子弹飞', '围城', '年轮'],
+  },
+  {
+    name: '英语',
+    image: createThumb('EN', '#0ea5e9'),
+    description: '世界上使用最广泛的语言之一，汇聚了好莱坞与英国影视的精华。英语原声作品往往拥有精彩的台词与表演，是欣赏西方影视文化的最佳方式。',
+    examples: ['神探夏洛克', '憨豆先生', '沙丘', '权力的游戏'],
+  },
 ])
 const newLanguageName = ref('')
 const newLanguageImage = ref('')
@@ -854,8 +996,24 @@ onBeforeUnmount(() => {
         </div>
         <div class="pd-right">
           <div class="pd-section pd-section-sep">
-            <h4 class="pd-section-head">演员信息</h4>
-            <p class="pd-body-text">暂无更多详细信息。</p>
+            <h4 class="pd-section-head">关于演员</h4>
+            <p class="pd-body-text">{{ detailModal.item.bio || '暂无介绍。' }}</p>
+          </div>
+          <div v-if="detailModal.item.highlights?.length" class="pd-section pd-section-sep">
+            <h4 class="pd-section-head">特点</h4>
+            <div class="pd-tags">
+              <span v-for="tag in detailModal.item.highlights" :key="tag" class="pd-tag">{{ tag }}</span>
+            </div>
+          </div>
+          <div v-if="detailModal.item.films?.length" class="pd-section">
+            <h4 class="pd-section-head">代表作品</h4>
+            <ul class="pd-film-list">
+              <li v-for="film in detailModal.item.films" :key="film.title" class="pd-film-item">
+                <span class="pd-film-year">{{ film.year }}</span>
+                <span class="pd-film-title">{{ film.title }}</span>
+                <span v-if="film.role" class="pd-film-role">饰 {{ film.role }}</span>
+              </li>
+            </ul>
           </div>
         </div>
       </div>
@@ -877,8 +1035,14 @@ onBeforeUnmount(() => {
         </div>
         <div class="pd-right">
           <div class="pd-section pd-section-sep">
-            <h4 class="pd-section-head">角色信息</h4>
-            <p class="pd-body-text">暂无更多详细信息。</p>
+            <h4 class="pd-section-head">角色简介</h4>
+            <p class="pd-body-text">{{ detailModal.item.summary || '暂无简介。' }}</p>
+          </div>
+          <div v-if="detailModal.item.traits?.length" class="pd-section">
+            <h4 class="pd-section-head">性格特点</h4>
+            <div class="pd-tags">
+              <span v-for="trait in detailModal.item.traits" :key="trait" class="pd-tag">{{ trait }}</span>
+            </div>
           </div>
         </div>
       </div>
@@ -899,10 +1063,14 @@ onBeforeUnmount(() => {
           <div class="pd-section pd-section-sep">
             <h2 class="pd-title">{{ detailModal.item.title }}</h2>
             <p class="pd-meta">{{ [detailModal.item.genre, detailModal.item.language, detailModal.item.type].filter(Boolean).join(' · ') }}</p>
+            <div class="pd-movie-meta-row">
+              <span v-if="detailModal.item.year" class="pd-meta-tag">{{ detailModal.item.year }}</span>
+              <span v-if="detailModal.item.director" class="pd-meta-tag">导演：{{ detailModal.item.director }}</span>
+            </div>
           </div>
           <div class="pd-section">
-            <h4 class="pd-section-head">看过且喜欢的电影</h4>
-            <p class="pd-body-text">暂无更多详细信息。</p>
+            <h4 class="pd-section-head">剧情简介</h4>
+            <p class="pd-body-text">{{ detailModal.item.summary || '暂无简介。' }}</p>
           </div>
         </div>
       </div>
@@ -918,8 +1086,14 @@ onBeforeUnmount(() => {
         </div>
         <div class="pd-right">
           <div class="pd-section pd-section-sep">
-            <h4 class="pd-section-head">语种信息</h4>
-            <p class="pd-body-text">暂无更多详细信息。</p>
+            <h4 class="pd-section-head">关于{{ detailModal.item.name }}</h4>
+            <p class="pd-body-text">{{ detailModal.item.description || '暂无介绍。' }}</p>
+          </div>
+          <div v-if="detailModal.item.examples?.length" class="pd-section">
+            <h4 class="pd-section-head">代表作品</h4>
+            <ul class="pd-example-list">
+              <li v-for="ex in detailModal.item.examples" :key="ex" class="pd-example-item">{{ ex }}</li>
+            </ul>
           </div>
         </div>
       </div>
@@ -1159,5 +1333,76 @@ onBeforeUnmount(() => {
   font-size: 13px;
   line-height: 1.7;
   color: rgba(15, 23, 42, 0.60);
+}
+
+/* ── Film list (actor detail) ── */
+.pd-film-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.pd-film-item {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  font-size: 13px;
+  color: rgba(15, 23, 42, 0.80);
+}
+
+.pd-film-year {
+  font-size: 11px;
+  color: rgba(15, 23, 42, 0.40);
+  flex-shrink: 0;
+  min-width: 32px;
+}
+
+.pd-film-title {
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.pd-film-role {
+  font-size: 12px;
+  color: rgba(15, 23, 42, 0.50);
+}
+
+/* ── Movie meta row ── */
+.pd-movie-meta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 6px;
+}
+
+.pd-meta-tag {
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: rgba(15, 23, 42, 0.06);
+  border: 1px solid rgba(15, 23, 42, 0.10);
+  font-size: 12px;
+  color: #334155;
+}
+
+/* ── Language example list ── */
+.pd-example-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.pd-example-item {
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: rgba(15, 23, 42, 0.05);
+  border: 1px solid rgba(15, 23, 42, 0.10);
+  font-size: 12px;
+  color: #334155;
 }
 </style>
