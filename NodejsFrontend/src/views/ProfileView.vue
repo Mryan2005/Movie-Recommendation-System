@@ -223,7 +223,7 @@ const favoriteRoles = ref([
   {
     name: '堂吉诃德',
     from: '堂吉诃德',
-    image: createThumb('堂吉诃德', '#0ea5e9'),
+    image: 'https://github.com/Mryan2005/Movie-Recommendation-System/blob/main/imgs/tangjihede.png?raw=true',
     summary: '塞万提斯笔下的经典文学角色，沉迷骑士小说的乡绅，骑着瘦马手持长矛行侠仗义，将风车当作巨人，是文学史上最著名的理想主义者形象。',
     traits: ['理想主义', '骑士精神', '脱离现实', '文学经典'],
   },
@@ -244,14 +244,14 @@ const favoriteRoles = ref([
   {
     name: '今汐',
     from: '鸣潮',
-    image: createThumb('今汐', '#7c3aed'),
+    image: 'https://github.com/Mryan2005/Movie-Recommendation-System/blob/main/imgs/jinxi.jpg?raw=true',
     summary: '《鸣潮》中以优雅沉静著称的角色，拥有独特的水系能力，举止高雅，在鸣潮的世界观中是极具辨识度的人气角色。',
     traits: ['优雅沉静', '水系能力', '高雅气质', '人气角色'],
   },
   {
     name: '彦卿',
     from: '崩坏：星穹铁道',
-    image: createThumb('彦卿', '#0ea5e9'),
+    image: 'https://github.com/Mryan2005/Movie-Recommendation-System/blob/main/imgs/yinqing.jpg?raw=true',
     summary: '《崩坏：星穹铁道》中的高人气角色，以凌厉的剑法和高冷外表著称，背后藏着深厚的情感与故事，是米哈游旗下作品中极受欢迎的角色之一。',
     traits: ['高冷剑客', '剑法凌厉', '内心深沉', '高人气'],
   },
@@ -279,7 +279,7 @@ const favoriteRoles = ref([
   {
     name: '憨豆先生',
     from: '憨豆先生',
-    image: createThumb('憨豆', '#334155'),
+    image: 'https://github.com/Mryan2005/Movie-Recommendation-System/blob/main/imgs/mrbean.jpg?raw=true',
     summary: '英国喜剧演员罗温·艾金森饰演的经典角色，以夸张的肢体语言和几乎不开口的无声喜剧风格享誉全球，是跨越语言文化的喜剧符号。',
     traits: ['无声喜剧', '肢体夸张', '跨文化喜剧符号', '经典形象'],
   },
@@ -330,14 +330,14 @@ const cosplayRoles = ref([
   {
     name: '堂吉诃德',
     from: '堂吉诃德',
-    image: createThumb('堂吉诃德', '#0ea5e9'),
+    image: 'https://github.com/Mryan2005/Movie-Recommendation-System/blob/main/imgs/tangjihede.png?raw=true',
     summary: '塞万提斯笔下的经典文学角色，沉迷骑士小说的乡绅，骑着瘦马手持长矛行侠仗义，将风车当作巨人，是文学史上最著名的理想主义者形象。',
     traits: ['理想主义', '骑士精神', '脱离现实', '文学经典'],
   },
   {
     name: '憨豆先生',
     from: '憨豆先生',
-    image: createThumb('憨豆', '#334155'),
+    image: 'https://github.com/Mryan2005/Movie-Recommendation-System/blob/main/imgs/mrbean.jpg?raw=true',
     summary: '英国喜剧演员罗温·艾金森饰演的经典角色，以夸张的肢体语言和几乎不开口的无声喜剧风格享誉全球，是跨越语言文化的喜剧符号。',
     traits: ['无声喜剧', '肢体夸张', '跨文化喜剧符号', '经典形象'],
   },
