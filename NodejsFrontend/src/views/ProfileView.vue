@@ -327,27 +327,7 @@ const removeMovie = (index) => likedMovies.value.splice(index, 1)
 const openDetail = (type, item) => {
   if (!item) return
   resetModalSize()
-  const detail = {
-    image: item.image || '',
-    title: item.name || item.title,
-    subtitle: '',
-    meta: '',
-  }
-  if (type === 'actor') {
-    detail.subtitle = '喜欢的演员'
-  } else if (type === 'language') {
-    detail.subtitle = '喜欢的语种'
-  } else if (type === 'role') {
-    detail.subtitle = '喜欢的角色'
-    detail.meta = item.from
-  } else if (type === 'cos') {
-    detail.subtitle = '想 cos 的角色'
-    detail.meta = item.from
-  } else if (type === 'movie') {
-    detail.subtitle = '看过且喜欢的电影'
-    detail.meta = [item.genre, item.language, item.type].filter(Boolean).join(' · ')
-  }
-  detailModal.value = detail
+  detailModal.value = { type, item }
 }
 
 const closeDetail = () => {
@@ -858,17 +838,92 @@ onBeforeUnmount(() => {
   </div>
 
   <div v-if="detailModal" class="detail-backdrop" @click.self="closeDetail">
-    <div class="detail-modal" :style="detailModalStyle">
+    <div class="detail-modal pd-modal" :style="detailModalStyle">
       <button class="close-btn" type="button" aria-label="关闭" @click="closeDetail">
         <span aria-hidden="true">×</span>
       </button>
-      <div class="detail-header">
-        <div class="thumb large" :style="{ backgroundImage: detailModal.image ? `url(${detailModal.image})` : '' }"></div>
-        <div>
-          <h3 style="margin: 4px 0">{{ detailModal.title }}</h3>
-          <p class="muted" v-if="detailModal.meta">{{ detailModal.meta }}</p>
+
+      <!-- ── Actor ── -->
+      <div v-if="detailModal.type === 'actor'" class="pd-inner">
+        <div class="pd-left">
+          <div class="pd-photo" :style="{ backgroundImage: `url(${detailModal.item.image})` }"></div>
+          <h3 class="pd-name">{{ detailModal.item.name }}</h3>
+          <div class="pd-tags">
+            <span class="pd-tag">喜欢的演员</span>
+          </div>
+        </div>
+        <div class="pd-right">
+          <div class="pd-section pd-section-sep">
+            <h4 class="pd-section-head">演员信息</h4>
+            <p class="pd-body-text">暂无更多详细信息。</p>
+          </div>
         </div>
       </div>
+
+      <!-- ── Role / Cos ── -->
+      <div v-else-if="detailModal.type === 'role' || detailModal.type === 'cos'" class="pd-inner">
+        <div class="pd-left">
+          <div class="pd-photo" :style="{ backgroundImage: `url(${detailModal.item.image})` }"></div>
+          <h3 class="pd-name">{{ detailModal.item.name }}</h3>
+          <div class="pd-identity">
+            <div class="pd-id-row">
+              <span class="pd-id-label">来源</span>
+              <span>{{ detailModal.item.from }}</span>
+            </div>
+          </div>
+          <div class="pd-tags">
+            <span class="pd-tag">{{ detailModal.type === 'cos' ? '想 cos 的角色' : '喜欢的角色' }}</span>
+          </div>
+        </div>
+        <div class="pd-right">
+          <div class="pd-section pd-section-sep">
+            <h4 class="pd-section-head">角色信息</h4>
+            <p class="pd-body-text">暂无更多详细信息。</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Movie ── -->
+      <div v-else-if="detailModal.type === 'movie'" class="pd-inner">
+        <div class="pd-left">
+          <div class="pd-poster" :style="{ backgroundImage: `url(${detailModal.item.image})` }"></div>
+          <div class="pd-tags">
+            <span
+              v-for="tag in [detailModal.item.genre, detailModal.item.language, detailModal.item.type].filter(Boolean)"
+              :key="tag"
+              class="pd-tag"
+            >{{ tag }}</span>
+          </div>
+        </div>
+        <div class="pd-right">
+          <div class="pd-section pd-section-sep">
+            <h2 class="pd-title">{{ detailModal.item.title }}</h2>
+            <p class="pd-meta">{{ [detailModal.item.genre, detailModal.item.language, detailModal.item.type].filter(Boolean).join(' · ') }}</p>
+          </div>
+          <div class="pd-section">
+            <h4 class="pd-section-head">看过且喜欢的电影</h4>
+            <p class="pd-body-text">暂无更多详细信息。</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Language / fallback ── -->
+      <div v-else class="pd-inner">
+        <div class="pd-left">
+          <div class="pd-photo" :style="{ backgroundImage: `url(${detailModal.item.image})` }"></div>
+          <h3 class="pd-name">{{ detailModal.item.name }}</h3>
+          <div class="pd-tags">
+            <span class="pd-tag">喜欢的语种</span>
+          </div>
+        </div>
+        <div class="pd-right">
+          <div class="pd-section pd-section-sep">
+            <h4 class="pd-section-head">语种信息</h4>
+            <p class="pd-body-text">暂无更多详细信息。</p>
+          </div>
+        </div>
+      </div>
+
       <div class="resize-handle" @mousedown="startResize"></div>
     </div>
   </div>
@@ -958,3 +1013,151 @@ onBeforeUnmount(() => {
     </div>
   </div>
 </template>
+
+<style scoped>
+/* ── Profile detail modal — two-column layout ── */
+.pd-modal {
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.pd-inner {
+  display: flex;
+  gap: 16px;
+  height: 100%;
+  padding-top: 8px;
+  overflow: hidden;
+}
+
+/* ── Left column ── */
+.pd-left {
+  width: 200px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(15, 23, 42, 0.2) transparent;
+}
+
+.pd-photo {
+  width: 130px;
+  height: 170px;
+  border-radius: 12px;
+  background-size: cover;
+  background-position: center;
+  background-color: rgba(15, 23, 42, 0.06);
+  border: 2px solid rgba(15, 23, 42, 0.12);
+  flex-shrink: 0;
+}
+
+.pd-poster {
+  width: 130px;
+  height: 185px;
+  border-radius: 10px;
+  background-size: cover;
+  background-position: center;
+  background-color: rgba(15, 23, 42, 0.06);
+  border: 2px solid rgba(15, 23, 42, 0.12);
+  flex-shrink: 0;
+}
+
+.pd-name {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 800;
+  color: #0f172a;
+  text-align: center;
+}
+
+.pd-identity {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  border-top: 1px solid rgba(15, 23, 42, 0.10);
+  border-bottom: 1px solid rgba(15, 23, 42, 0.10);
+  padding: 8px 0;
+}
+
+.pd-id-row {
+  display: flex;
+  gap: 6px;
+  font-size: 12px;
+  color: rgba(15, 23, 42, 0.80);
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.pd-id-label {
+  color: rgba(15, 23, 42, 0.45);
+  flex-shrink: 0;
+}
+
+.pd-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  justify-content: center;
+}
+
+.pd-tag {
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: rgba(15, 23, 42, 0.07);
+  border: 1px solid rgba(15, 23, 42, 0.12);
+  font-size: 11px;
+  color: #334155;
+}
+
+/* ── Right column ── */
+.pd-right {
+  flex: 1;
+  min-width: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding-right: 4px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(15, 23, 42, 0.2) transparent;
+}
+
+.pd-section {
+  padding-bottom: 12px;
+}
+
+.pd-section-sep {
+  border-bottom: 1px solid rgba(15, 23, 42, 0.10);
+}
+
+.pd-section-head {
+  margin: 0 0 8px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.pd-title {
+  margin: 0 0 4px;
+  font-size: 22px;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.pd-meta {
+  margin: 0;
+  font-size: 13px;
+  color: rgba(15, 23, 42, 0.55);
+}
+
+.pd-body-text {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.7;
+  color: rgba(15, 23, 42, 0.60);
+}
+</style>
