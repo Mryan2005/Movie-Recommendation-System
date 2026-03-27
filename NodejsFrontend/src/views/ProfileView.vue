@@ -98,14 +98,14 @@ const favoriteRoles = ref([
   {
     name: '月代雪',
     from: '魔法少女的魔女审判',
-    image: 'https://github.com/Mryan2005/Movie-Recommendation-System/blob/copilot/add-movie-recommendation-home-login-register/imgs/Tsukishiro%20Yuki.png?raw=true',
+    image: 'https://github.com/Mryan2005/Movie-Recommendation-System/blob/main/imgs/Tsukishiro%20Yuki.png?raw=true',
     summary: '月代雪是《魔法少女的魔女审判》中的核心角色，外表清冷温柔却拥有坚定的内心，在魔法与审判的世界里始终坚守自己的信念与情感。',
     traits: ['清冷温柔', '内心坚定', '正义感强', '友情至上'],
   },
   {
     name: '伊蕾娜',
     from: '魔女之旅',
-    image: 'https://github.com/Mryan2005/Movie-Recommendation-System/blob/copilot/add-movie-recommendation-home-login-register/imgs/Elaina.jpg?raw=true',
+    image: 'https://github.com/Mryan2005/Movie-Recommendation-System/blob/main/imgs/Elaina.jpg?raw=true',
     summary: '灰发灰眸的独行魔女，才华横溢却略显孤傲，以旅行者的身份游历各地，经历了无数温柔与残酷交织的故事，是《魔女之旅》的精神内核。',
     traits: ['独立自主', '才华横溢', '淡定从容', '灰发美少女'],
   },
@@ -133,28 +133,28 @@ const favoriteRoles = ref([
   {
     name: '朝武芳乃',
     from: '千恋万花',
-    image: createThumb('朝武芳乃', '#7c3aed'),
+    image: 'https://github.com/Mryan2005/Movie-Recommendation-System/blob/main/imgs/yoshino.jpg?raw=true',
     summary: '《千恋万花》中的女主角之一，来自古老神社世家，外表传统端庄，内心温柔细腻，是日式传统美少女的典型形象。',
     traits: ['传统端庄', '温柔细腻', '神社巫女', '家族责任'],
   },
   {
     name: '丛雨',
     from: '千恋万花',
-    image: createThumb('丛雨', '#1f2937'),
+    image: 'https://github.com/Mryan2005/Movie-Recommendation-System/blob/main/imgs/congyu.jpg?raw=true',
     summary: '《千恋万花》中的另一位主要角色，性格活泼可爱，偶有腹黑，与朝武芳乃形成鲜明对比，给故事增添了不少活力与趣味。',
     traits: ['活泼可爱', '偶有腹黑', '元气满满', '反差萌'],
   },
   {
     name: '东海帝王',
     from: 'Pretty Derby',
-    image: createThumb('东海帝王', '#475569'),
+    image: 'https://github.com/Mryan2005/Movie-Recommendation-System/blob/main/imgs/Tokai%20Teio.png?raw=true',
     summary: '《赛马娘 Pretty Derby》中的人气角色，以强大的竞技精神和粗犷帅气的外形著称，是一位不甘平凡、热血励志的赛马娘。',
     traits: ['热血励志', '竞技精神强', '粗犷帅气', '自强不息'],
   },
   {
     name: '秋川弥生',
     from: 'Pretty Derby',
-    image: createThumb('秋川弥生', '#7c3aed'),
+    image: 'https://github.com/Mryan2005/Movie-Recommendation-System/blob/main/imgs/akikawayayoi.png?raw=true',
     summary: '《赛马娘 Pretty Derby》中的训练师角色，以认真负责的工作态度和对赛马娘的深切关怀著称，是游戏中重要的支持角色。',
     traits: ['认真负责', '关怀备至', '专业训练师', '温柔坚强'],
   },
@@ -203,7 +203,7 @@ const favoriteRoles = ref([
   {
     name: '灰原哀',
     from: '名侦探柯南',
-    image: createThumb('灰原', '#1f2937'),
+    image: 'https://github.com/Mryan2005/Movie-Recommendation-System/blob/main/imgs/Haibara%20Ai.png?raw=true',
     summary: '《名侦探柯南》中的重要人物，原本是黑衣组织的科学家，服用APTX4869后变成小孩，以灰原哀之名与柯南共同行动，冷静聪慧，形象深入人心。',
     traits: ['冷静聪慧', '神秘气质', '前组织成员', '反差萌'],
   },
@@ -226,7 +226,7 @@ const cosplayRoles = ref([
   {
     name: '月代雪',
     from: '魔法少女的魔女审判',
-    image: 'https://github.com/Mryan2005/Movie-Recommendation-System/blob/copilot/add-movie-recommendation-home-login-register/imgs/Tsukishiro%20Yuki.png?raw=true',
+    image: 'https://github.com/Mryan2005/Movie-Recommendation-System/blob/main/imgs/Tsukishiro%20Yuki.png?raw=true',
     summary: '月代雪是《魔法少女的魔女审判》中的核心角色，外表清冷温柔却拥有坚定的内心，在魔法与审判的世界里始终坚守自己的信念与情感。',
     traits: ['清冷温柔', '内心坚定', '正义感强', '友情至上'],
   },
@@ -247,14 +247,14 @@ const cosplayRoles = ref([
   {
     name: '朝武芳乃',
     from: '千恋万花',
-    image: createThumb('朝武芳乃', '#7c3aed'),
+    image: 'https://github.com/Mryan2005/Movie-Recommendation-System/blob/main/imgs/yoshino.jpg?raw=true',
     summary: '《千恋万花》中的女主角之一，来自古老神社世家，外表传统端庄，内心温柔细腻，是日式传统美少女的典型形象。',
     traits: ['传统端庄', '温柔细腻', '神社巫女', '家族责任'],
   },
   {
     name: '灰原哀',
     from: '名侦探柯南',
-    image: createThumb('灰原', '#1f2937'),
+    image: 'https://github.com/Mryan2005/Movie-Recommendation-System/blob/main/imgs/Haibara%20Ai.png?raw=true',
     summary: '《名侦探柯南》中的重要人物，原本是黑衣组织的科学家，服用APTX4869后变成小孩，以灰原哀之名与柯南共同行动，冷静聪慧，形象深入人心。',
     traits: ['冷静聪慧', '神秘气质', '前组织成员', '反差萌'],
   },
@@ -283,7 +283,7 @@ const cosplayRoles = ref([
 const favoriteActors = ref([
   {
     name: '周星驰',
-    image: createThumb('周星驰', '#7c3aed'),
+    image: 'https://github.com/Mryan2005/Movie-Recommendation-System/blob/main/imgs/xingye.png?raw=true',
     bio: '香港著名喜剧演员、编剧与导演，以无厘头喜剧风格闻名华语影坛。代表作涵盖《大话西游》《少林足球》《功夫》《喜剧之王》等，是华语电影史上最具影响力的喜剧人之一。',
     highlights: ['无厘头喜剧', '演而优则导', '港产片传奇', '国际知名'],
     films: [
@@ -295,7 +295,7 @@ const favoriteActors = ref([
   },
   {
     name: '周润发',
-    image: createThumb('周润发', '#0ea5e9'),
+    image: 'https://github.com/Mryan2005/Movie-Recommendation-System/blob/main/imgs/fa_ge.jpg?raw=true',
     bio: '香港著名演员，以《英雄本色》一举成名，凭借《上海滩》《赌神》《监狱风云》等确立其影坛地位，后赴好莱坞主演多部国际电影，是亚洲最具国际影响力的华人演员之一。',
     highlights: ['港产英雄片代表', '儒雅大气', '赌神形象深入人心', '国际影星'],
     films: [
@@ -306,7 +306,7 @@ const favoriteActors = ref([
   },
   {
     name: '黄子华',
-    image: createThumb('黄子华', '#1f2937'),
+    image: 'https://github.com/Mryan2005/Movie-Recommendation-System/blob/main/imgs/zihua.jpg?raw=true',
     bio: '香港栋笃笑（单口喜剧）表演者、演员，以犀利幽默的社会观察著称，主演电影《饭戏攻心》打破香港票房纪录，深受本地观众喜爱。',
     highlights: ['栋笃笑宗师', '社会观察犀利', '本土文化代表', '实力演员'],
     films: [
@@ -990,9 +990,6 @@ onBeforeUnmount(() => {
         <div class="pd-left">
           <div class="pd-photo" :style="{ backgroundImage: `url(${detailModal.item.image})` }"></div>
           <h3 class="pd-name">{{ detailModal.item.name }}</h3>
-          <div class="pd-tags">
-            <span class="pd-tag">喜欢的演员</span>
-          </div>
         </div>
         <div class="pd-right">
           <div class="pd-section pd-section-sep">
@@ -1028,9 +1025,6 @@ onBeforeUnmount(() => {
               <span class="pd-id-label">来源</span>
               <span>{{ detailModal.item.from }}</span>
             </div>
-          </div>
-          <div class="pd-tags">
-            <span class="pd-tag">{{ detailModal.type === 'cos' ? '想 cos 的角色' : '喜欢的角色' }}</span>
           </div>
         </div>
         <div class="pd-right">
@@ -1080,9 +1074,6 @@ onBeforeUnmount(() => {
         <div class="pd-left">
           <div class="pd-photo" :style="{ backgroundImage: `url(${detailModal.item.image})` }"></div>
           <h3 class="pd-name">{{ detailModal.item.name }}</h3>
-          <div class="pd-tags">
-            <span class="pd-tag">喜欢的语种</span>
-          </div>
         </div>
         <div class="pd-right">
           <div class="pd-section pd-section-sep">
