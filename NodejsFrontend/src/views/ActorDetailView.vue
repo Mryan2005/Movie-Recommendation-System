@@ -235,7 +235,7 @@ const close = () => router.back()
   gap: 8px;
   overflow-y: auto;
   scrollbar-width: thin;
-  scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+  scrollbar-color: rgba(15, 23, 42, 0.2) transparent;
 }
 
 .ad-photo {
@@ -244,8 +244,8 @@ const close = () => router.back()
   border-radius: 12px;
   background-size: cover;
   background-position: center;
-  background-color: rgba(255, 255, 255, 0.15);
-  border: 2px solid rgba(255, 255, 255, 0.3);
+  background-color: rgba(15, 23, 42, 0.06);
+  border: 2px solid rgba(15, 23, 42, 0.12);
   flex-shrink: 0;
 }
 
@@ -253,14 +253,14 @@ const close = () => router.back()
   margin: 0;
   font-size: 18px;
   font-weight: 800;
-  color: #fff;
+  color: #0f172a;
   text-align: center;
 }
 
 .ad-en-name {
   margin: 0;
   font-size: 12px;
-  color: rgba(255, 255, 255, 0.65);
+  color: rgba(15, 23, 42, 0.50);
   text-align: center;
 }
 
@@ -269,8 +269,8 @@ const close = () => router.back()
   display: flex;
   flex-direction: column;
   gap: 4px;
-  border-top: 1px solid rgba(255, 255, 255, 0.15);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  border-top: 1px solid rgba(15, 23, 42, 0.10);
+  border-bottom: 1px solid rgba(15, 23, 42, 0.10);
   padding: 8px 0;
 }
 
@@ -278,12 +278,12 @@ const close = () => router.back()
   display: flex;
   gap: 6px;
   font-size: 12px;
-  color: rgba(255, 255, 255, 0.9);
+  color: rgba(15, 23, 42, 0.80);
   justify-content: space-between;
 }
 
 .ad-info-label {
-  color: rgba(255, 255, 255, 0.55);
+  color: rgba(15, 23, 42, 0.45);
   flex-shrink: 0;
 }
 
@@ -297,10 +297,10 @@ const close = () => router.back()
 .ad-tag {
   padding: 3px 8px;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.18);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: rgba(15, 23, 42, 0.07);
+  border: 1px solid rgba(15, 23, 42, 0.12);
   font-size: 11px;
-  color: #fff;
+  color: #334155;
 }
 
 /* ── Right column ── */
@@ -313,21 +313,21 @@ const close = () => router.back()
   gap: 14px;
   padding-right: 4px;
   scrollbar-width: thin;
-  scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+  scrollbar-color: rgba(15, 23, 42, 0.2) transparent;
 }
 
 .ad-section-head {
   margin: 0 0 8px;
   font-size: 14px;
   font-weight: 700;
-  color: #fff;
+  color: #0f172a;
   display: flex;
   align-items: center;
   gap: 6px;
 }
 
 .ad-bio-section {
-  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  border-bottom: 1px solid rgba(15, 23, 42, 0.10);
   padding-bottom: 12px;
 }
 
@@ -335,12 +335,12 @@ const close = () => router.back()
   margin: 0;
   font-size: 13px;
   line-height: 1.7;
-  color: rgba(255, 255, 255, 0.85);
+  color: rgba(15, 23, 42, 0.72);
 }
 
 /* ── Films ── */
 .ad-films-section {
-  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  border-bottom: 1px solid rgba(15, 23, 42, 0.10);
   padding-bottom: 12px;
 }
 
@@ -357,15 +357,15 @@ const close = () => router.back()
   display: flex;
   align-items: center;
   gap: 10px;
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(15, 23, 42, 0.04);
   border-radius: 8px;
   padding: 6px 10px;
   font-size: 13px;
-  color: rgba(255, 255, 255, 0.9);
+  color: rgba(15, 23, 42, 0.80);
 }
 
 .ad-film-year {
-  color: rgba(255, 255, 255, 0.55);
+  color: rgba(15, 23, 42, 0.45);
   font-size: 12px;
   min-width: 36px;
 }
@@ -373,20 +373,22 @@ const close = () => router.back()
 .ad-film-title {
   font-weight: 600;
   flex: 1;
+  color: #1e293b;
 }
 
 .ad-film-role {
   font-size: 12px;
-  color: rgba(255, 255, 255, 0.6);
+  color: rgba(15, 23, 42, 0.50);
 }
 
 /* ── Comments ── */
 .ad-count-badge {
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(15, 23, 42, 0.08);
   border-radius: 999px;
   padding: 1px 7px;
   font-size: 12px;
   font-weight: 600;
+  color: #334155;
 }
 
 .ad-comment-form {
@@ -399,16 +401,16 @@ const close = () => router.back()
 .ad-input {
   padding: 6px 10px;
   border-radius: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  background: rgba(255, 255, 255, 0.15);
-  color: #fff;
+  border: 1px solid rgba(15, 23, 42, 0.15);
+  background: rgba(15, 23, 42, 0.04);
+  color: #1e293b;
   font-size: 13px;
   outline: none;
   min-width: 0;
 }
 
 .ad-input::placeholder {
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(15, 23, 42, 0.38);
 }
 
 .ad-input-sm {
@@ -423,9 +425,9 @@ const close = () => router.back()
 .ad-submit-btn {
   padding: 6px 14px;
   border-radius: 8px;
-  border: none;
-  background: rgba(255, 255, 255, 0.25);
-  color: #fff;
+  border: 1px solid rgba(15, 23, 42, 0.14);
+  background: rgba(15, 23, 42, 0.08);
+  color: #1e293b;
   font-weight: 700;
   font-size: 13px;
   cursor: pointer;
@@ -433,7 +435,7 @@ const close = () => router.back()
 }
 
 .ad-submit-btn:hover {
-  background: rgba(255, 255, 255, 0.35);
+  background: rgba(15, 23, 42, 0.14);
 }
 
 .ad-comment-list {
@@ -446,11 +448,11 @@ const close = () => router.back()
 }
 
 .ad-comment-item {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(15, 23, 42, 0.04);
   border-radius: 8px;
   padding: 8px 10px;
   font-size: 13px;
-  color: rgba(255, 255, 255, 0.9);
+  color: rgba(15, 23, 42, 0.80);
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
@@ -458,7 +460,7 @@ const close = () => router.back()
 }
 
 .ad-star-rating {
-  color: #fbbf24;
+  color: #f59e0b;
   font-size: 12px;
 }
 
@@ -469,7 +471,7 @@ const close = () => router.back()
 
 .ad-time {
   font-size: 11px;
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(15, 23, 42, 0.38);
   white-space: nowrap;
 }
 </style>
