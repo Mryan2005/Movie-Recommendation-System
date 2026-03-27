@@ -1,5 +1,9 @@
 <script setup>
+import { nextTick, ref } from 'vue'
 import { RouterLink } from 'vue-router'
+import ActorDetailView from './ActorDetailView.vue'
+import { defaultActor, getActorDetail } from '../data/actorProfiles'
+
 const featured = [
   { title: '沙丘2', score: 9.1, tags: ['科幻', '史诗', 'IMAX'] },
   { title: '奥本海默', score: 8.9, tags: ['传记', '剧情', '诺兰'] },
@@ -18,6 +22,31 @@ const actors = [
   { name: '小罗伯特·唐尼', role: '路易斯·施特劳斯', film: '奥本海默' },
   { name: '杨紫琼', role: '秀莲', film: '瞬息全宇宙' },
 ]
+
+const showActorDetail = ref(false)
+const selectedActor = ref(null)
+const actorError = ref('')
+const lastActorButton = ref(null)
+
+const openActorDetail = (actorName, event) => {
+  const detail = getActorDetail(actorName)
+  if (!detail) {
+    actorError.value = '未找到该演员的资料'
+    return
+  }
+  actorError.value = ''
+  lastActorButton.value = event?.currentTarget || null
+  selectedActor.value = detail
+  showActorDetail.value = true
+}
+
+const closeActorDetail = () => {
+  showActorDetail.value = false
+  selectedActor.value = null
+  nextTick(() => {
+    lastActorButton.value?.focus?.()
+  })
+}
 </script>
 
 <template>
@@ -102,11 +131,34 @@ const actors = [
         <div class="tag-row">
           <span class="tag">关注</span>
           <span class="tag">订阅新片</span>
-          <RouterLink class="tag link" :to="`/actor/${actor.name === '蒂莫西·柴勒梅德' ? 'paul' : 'actor'}`">
+          <button
+            class="tag link"
+            type="button"
+            :aria-label="`查看${actor.name}的演员资料`"
+            aria-haspopup="dialog"
+            @click="openActorDetail(actor.name, $event)"
+          >
             演员资料
-          </RouterLink>
+          </button>
         </div>
       </div>
     </div>
+
+    <p v-if="actorError" class="actor-error" role="alert">{{ actorError }}</p>
+
+    <ActorDetailView
+      v-if="showActorDetail && selectedActor"
+      :actor="selectedActor"
+      inline
+      @close="closeActorDetail"
+    />
   </div>
 </template>
+
+<style scoped>
+.actor-error {
+  margin: 12px 0;
+  color: var(--danger);
+  font-weight: 600;
+}
+</style>
