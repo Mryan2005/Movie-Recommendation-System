@@ -403,10 +403,6 @@ const startResize = (event) => {
 const detailModalStyle = computed(() => ({
   width: `${modalSize.value.width}px`,
   height: `${modalSize.value.height}px`,
-  background: 'rgba(42, 130, 228, 1)',
-  opacity: 1,
-  borderRadius: '17.5px',
-  color: '#fff',
 }))
 
 const resetAddForm = (type) => {
