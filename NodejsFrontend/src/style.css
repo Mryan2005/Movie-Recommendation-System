@@ -635,6 +635,41 @@ a {
   margin-top: 8px;
 }
 
+.collapsible-field {
+  display: grid;
+  gap: 8px;
+}
+
+.collapse-head {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: #f8fafc;
+  color: #0f172a;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.collapse-head:hover {
+  border-color: #2563eb;
+  box-shadow: 0 8px 18px rgba(37, 99, 235, 0.12);
+}
+
+.collapse-head .caret {
+  font-size: 16px;
+  transition: transform 0.2s ease;
+}
+
+.collapse-head .caret.open {
+  transform: rotate(180deg);
+}
+
 .section-head {
   display: flex;
   justify-content: space-between;
