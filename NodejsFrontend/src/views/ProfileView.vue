@@ -152,8 +152,7 @@ const roleStats = computed(() => {
     sources: Array.from(sourceMap.entries()).map(([label, count]) => ({ label, count })),
   }
 })
-const showStats = ref(false)
-const showRoleStats = ref(false)
+const statsModal = ref(null)
 const listModal = ref(null)
 const listSearch = ref('')
 
@@ -529,20 +528,28 @@ const addMovie = () => {
 
 const removeMovie = (index) => likedMovies.value.splice(index, 1)
 
-const toggleMovieStats = () => {
-  showRoleStats.value = false
-  showStats.value = !showStats.value
-}
-
-const toggleRoleStats = () => {
-  showStats.value = false
-  showRoleStats.value = !showRoleStats.value
-}
-
 const closePopovers = () => {
-  showStats.value = false
-  showRoleStats.value = false
+  statsModal.value = null
 }
+
+const openStats = (type) => {
+  closePopovers()
+  statsModal.value = type
+}
+
+const closeStats = () => {
+  statsModal.value = null
+}
+
+const statsModalData = computed(() => {
+  if (statsModal.value === 'movie') {
+    return { title: '影视数据统计', data: stats.value, type: 'movie' }
+  }
+  if (statsModal.value === 'role') {
+    return { title: '角色数据统计', data: roleStats.value, type: 'role' }
+  }
+  return null
+})
 
 const openDetail = (type, item) => {
   if (!item) return
@@ -846,36 +853,10 @@ onBeforeUnmount(() => {
             <button class="ghost-btn tiny" type="button" @click="showRoleEditor = !showRoleEditor">
               {{ showRoleEditor ? '取消编辑' : '编辑' }}
             </button>
-            <button class="ghost-btn tiny" type="button" @click="toggleRoleStats">
-              {{ showRoleStats ? '收起统计' : '查看统计' }}
-            </button>
-          </div>
-          <div v-if="showRoleStats" class="stats-popover">
-            <div class="field">
-              <label>角色特征</label>
-              <div class="bar-chart">
-                <div v-for="item in roleStats.traits" :key="item.label" class="bar">
-                  <span class="bar-label">{{ item.label }} · {{ item.count }}</span>
-                  <div class="bar-track">
-                    <div class="bar-fill" :style="{ width: barWidth(roleStats.traits, item.count) }"></div>
-                  </div>
-                </div>
-                <p v-if="!roleStats.traits.length" class="muted">暂无特征统计</p>
-              </div>
-            </div>
-            <div class="field">
-              <label>出处</label>
-              <div class="bar-chart">
-                <div v-for="item in roleStats.sources" :key="item.label" class="bar">
-                  <span class="bar-label">{{ item.label }} · {{ item.count }}</span>
-                  <div class="bar-track">
-                    <div class="bar-fill" :style="{ width: barWidth(roleStats.sources, item.count) }"></div>
-                  </div>
-                </div>
-                <p v-if="!roleStats.sources.length" class="muted">暂无出处统计</p>
-              </div>
-            </div>
-          </div>
+          <button class="ghost-btn tiny" type="button" @click="openStats('role')">
+            查看统计
+          </button>
+        </div>
         </div>
         <div class="avatar-grid">
           <div
@@ -942,44 +923,9 @@ onBeforeUnmount(() => {
           <button class="ghost-btn tiny" type="button" @click="showMovieEditor = !showMovieEditor">
             {{ showMovieEditor ? '取消编辑' : '编辑' }}
           </button>
-          <button class="ghost-btn tiny" type="button" @click="toggleMovieStats">
-            {{ showStats ? '收起统计' : '查看统计' }}
+          <button class="ghost-btn tiny" type="button" @click="openStats('movie')">
+            查看统计
           </button>
-        </div>
-        <div v-if="showStats" class="stats-popover">
-          <div class="field">
-            <label>题材</label>
-            <div class="bar-chart">
-              <div v-for="item in stats.genres" :key="item.label" class="bar">
-                <span class="bar-label">{{ item.label }} · {{ item.count }}</span>
-                <div class="bar-track">
-                  <div class="bar-fill" :style="{ width: barWidth(stats.genres, item.count) }"></div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="field">
-            <label>语种</label>
-            <div class="bar-chart">
-              <div v-for="item in stats.languages" :key="item.label" class="bar">
-                <span class="bar-label">{{ item.label }} · {{ item.count }}</span>
-                <div class="bar-track">
-                  <div class="bar-fill" :style="{ width: barWidth(stats.languages, item.count) }"></div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="field">
-            <label>类型</label>
-            <div class="bar-chart">
-              <div v-for="item in stats.types" :key="item.label" class="bar">
-                <span class="bar-label">{{ item.label }} · {{ item.count }}</span>
-                <div class="bar-track">
-                  <div class="bar-fill" :style="{ width: barWidth(stats.types, item.count) }"></div>
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
       <ul class="list">
@@ -1316,6 +1262,81 @@ onBeforeUnmount(() => {
         </template>
       </div>
       <div class="resize-handle" @mousedown="startResize"></div>
+    </div>
+  </div>
+
+  <div v-if="statsModalData" class="detail-backdrop stats-layer" @click.self="closeStats">
+    <div class="detail-modal stats-modal">
+      <button class="close-btn" type="button" aria-label="关闭" @click="closeStats">
+        <span aria-hidden="true">×</span>
+      </button>
+      <h3 style="margin-top: 0">{{ statsModalData.title }}</h3>
+      <div class="stats-grid">
+        <template v-if="statsModalData.type === 'movie'">
+          <div class="field">
+            <label>题材</label>
+            <div class="bar-chart">
+              <div v-for="item in statsModalData.data.genres" :key="item.label" class="bar">
+                <span class="bar-label">{{ item.label }} · {{ item.count }}</span>
+                <div class="bar-track">
+                  <div class="bar-fill" :style="{ width: barWidth(statsModalData.data.genres, item.count) }"></div>
+                </div>
+              </div>
+              <p v-if="!statsModalData.data.genres.length" class="muted">暂无数据</p>
+            </div>
+          </div>
+          <div class="field">
+            <label>语种</label>
+            <div class="bar-chart">
+              <div v-for="item in statsModalData.data.languages" :key="item.label" class="bar">
+                <span class="bar-label">{{ item.label }} · {{ item.count }}</span>
+                <div class="bar-track">
+                  <div class="bar-fill" :style="{ width: barWidth(statsModalData.data.languages, item.count) }"></div>
+                </div>
+              </div>
+              <p v-if="!statsModalData.data.languages.length" class="muted">暂无数据</p>
+            </div>
+          </div>
+          <div class="field">
+            <label>类型</label>
+            <div class="bar-chart">
+              <div v-for="item in statsModalData.data.types" :key="item.label" class="bar">
+                <span class="bar-label">{{ item.label }} · {{ item.count }}</span>
+                <div class="bar-track">
+                  <div class="bar-fill" :style="{ width: barWidth(statsModalData.data.types, item.count) }"></div>
+                </div>
+              </div>
+              <p v-if="!statsModalData.data.types.length" class="muted">暂无数据</p>
+            </div>
+          </div>
+        </template>
+        <template v-else>
+          <div class="field">
+            <label>角色特征</label>
+            <div class="bar-chart">
+              <div v-for="item in statsModalData.data.traits" :key="item.label" class="bar">
+                <span class="bar-label">{{ item.label }} · {{ item.count }}</span>
+                <div class="bar-track">
+                  <div class="bar-fill" :style="{ width: barWidth(statsModalData.data.traits, item.count) }"></div>
+                </div>
+              </div>
+              <p v-if="!statsModalData.data.traits.length" class="muted">暂无特征统计</p>
+            </div>
+          </div>
+          <div class="field">
+            <label>出处</label>
+            <div class="bar-chart">
+              <div v-for="item in statsModalData.data.sources" :key="item.label" class="bar">
+                <span class="bar-label">{{ item.label }} · {{ item.count }}</span>
+                <div class="bar-track">
+                  <div class="bar-fill" :style="{ width: barWidth(statsModalData.data.sources, item.count) }"></div>
+                </div>
+              </div>
+              <p v-if="!statsModalData.data.sources.length" class="muted">暂无出处统计</p>
+            </div>
+          </div>
+        </template>
+      </div>
     </div>
   </div>
 </template>
