@@ -252,7 +252,7 @@ const favoriteRoles = ref([
   {
     name: '彦卿',
     from: '崩坏：星穹铁道',
-    image: 'https://github.com/Mryan2005/Movie-Recommendation-System/blob/main/imgs/yinqing.jpg?raw=true',
+    image: 'https://github.com/Mryan2005/Movie-Recommendation-System/blob/main/imgs/yanqing.jpg?raw=true',
     summary: '《崩坏：星穹铁道》中的高人气角色，以凌厉的剑法和高冷外表著称，背后藏着深厚的情感与故事，是米哈游旗下作品中极受欢迎的角色之一。',
     traits: ['高冷剑客', '剑法凌厉', '内心深沉', '高人气'],
   },
