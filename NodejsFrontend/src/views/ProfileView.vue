@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
+import { ref, computed, onMounted, onBeforeUnmount, watch } from 'vue'
 
 const createThumb = (label, color = '#334155') =>
   `data:image/svg+xml,${encodeURIComponent(
@@ -17,11 +17,6 @@ const profile = ref({
 })
 
 const favorites = []
-
-const watching = [
-  { title: '禁闭岛', progress: '已看 100%' },
-  { title: '降临', progress: '待看' },
-]
 
 const likedMovies = ref([
   {
@@ -141,8 +136,26 @@ const stats = computed(() => {
     types: Array.from(typeMap.entries()).map(([label, count]) => ({ label, count })),
   }
 })
+const roleStats = computed(() => {
+  const traitMap = new Map()
+  const sourceMap = new Map()
+  favoriteRoles.value.forEach((role) => {
+    if (role.from) {
+      sourceMap.set(role.from, (sourceMap.get(role.from) || 0) + 1)
+    }
+    ;(role.traits || []).forEach((trait) => {
+      traitMap.set(trait, (traitMap.get(trait) || 0) + 1)
+    })
+  })
+  return {
+    traits: Array.from(traitMap.entries()).map(([label, count]) => ({ label, count })),
+    sources: Array.from(sourceMap.entries()).map(([label, count]) => ({ label, count })),
+  }
+})
 const showStats = ref(false)
+const showRoleStats = ref(false)
 const listModal = ref(null)
+const listSearch = ref('')
 
 const favoriteRoles = ref([
   {
@@ -516,8 +529,24 @@ const addMovie = () => {
 
 const removeMovie = (index) => likedMovies.value.splice(index, 1)
 
+const toggleMovieStats = () => {
+  showRoleStats.value = false
+  showStats.value = !showStats.value
+}
+
+const toggleRoleStats = () => {
+  showStats.value = false
+  showRoleStats.value = !showRoleStats.value
+}
+
+const closePopovers = () => {
+  showStats.value = false
+  showRoleStats.value = false
+}
+
 const openDetail = (type, item) => {
   if (!item) return
+  closePopovers()
   resetModalSize()
   detailModal.value = { type, item }
 }
@@ -594,6 +623,7 @@ const resetAddForm = (type) => {
 }
 
 const openAdd = (type) => {
+  closePopovers()
   resetAddForm(type)
   resetModalSize()
   addModal.value = type
@@ -631,6 +661,7 @@ const handleAddConfirm = () => {
 }
 
 const openList = (type) => {
+  closePopovers()
   resetModalSize()
   listModal.value = type
 }
@@ -653,6 +684,43 @@ const listModalData = computed(() => {
     ...result,
     items: result.items.map((item, idx) => ({ item, idx })),
   }
+})
+
+const filteredListItems = computed(() => {
+  if (!listModalData.value) return []
+  const keyword = listSearch.value.trim().toLowerCase()
+  if (!keyword) return listModalData.value.items
+  return listModalData.value.items.filter(({ item }) => {
+    if (listModalData.value.type === 'actor') {
+      const textLower = [item.name, ...(item.highlights || []), item.bio].filter(Boolean).join(' ').toLowerCase()
+      return textLower.includes(keyword)
+    }
+    if (listModalData.value.type === 'role' || listModalData.value.type === 'cos') {
+      const textLower = [item.name, item.from, ...(item.traits || []), item.summary].filter(Boolean).join(' ').toLowerCase()
+      return textLower.includes(keyword)
+    }
+    const textLower = [
+      item.title,
+      item.genre,
+      item.language,
+      item.type,
+      item.director,
+      item.summary,
+    ]
+      .filter(Boolean)
+      .join(' ')
+      .toLowerCase()
+    return textLower.includes(keyword)
+  })
+})
+
+watch(listModal, () => {
+  // Clear search whenever the show-all modal changes or closes
+  if (!listModal.value) {
+    listSearch.value = ''
+    return
+  }
+  listSearch.value = ''
 })
 
 onMounted(() => {
@@ -768,7 +836,7 @@ onBeforeUnmount(() => {
         </div>
       </div>
       <div class="mini-card">
-        <div class="section-head">
+        <div class="section-head stats-anchor">
           <h4>喜欢的角色</h4>
           <div class="section-actions">
             <button v-if="favoriteRoles.length > 10" class="ghost-btn tiny" type="button" @click="openList('role')">
@@ -778,6 +846,35 @@ onBeforeUnmount(() => {
             <button class="ghost-btn tiny" type="button" @click="showRoleEditor = !showRoleEditor">
               {{ showRoleEditor ? '取消编辑' : '编辑' }}
             </button>
+            <button class="ghost-btn tiny" type="button" @click="toggleRoleStats">
+              {{ showRoleStats ? '收起统计' : '查看统计' }}
+            </button>
+          </div>
+          <div v-if="showRoleStats" class="stats-popover">
+            <div class="field">
+              <label>角色特征</label>
+              <div class="bar-chart">
+                <div v-for="item in roleStats.traits" :key="item.label" class="bar">
+                  <span class="bar-label">{{ item.label }} · {{ item.count }}</span>
+                  <div class="bar-track">
+                    <div class="bar-fill" :style="{ width: barWidth(roleStats.traits, item.count) }"></div>
+                  </div>
+                </div>
+                <p v-if="!roleStats.traits.length" class="muted">暂无特征统计</p>
+              </div>
+            </div>
+            <div class="field">
+              <label>出处</label>
+              <div class="bar-chart">
+                <div v-for="item in roleStats.sources" :key="item.label" class="bar">
+                  <span class="bar-label">{{ item.label }} · {{ item.count }}</span>
+                  <div class="bar-track">
+                    <div class="bar-fill" :style="{ width: barWidth(roleStats.sources, item.count) }"></div>
+                  </div>
+                </div>
+                <p v-if="!roleStats.sources.length" class="muted">暂无出处统计</p>
+              </div>
+            </div>
           </div>
         </div>
         <div class="avatar-grid">
@@ -845,7 +942,7 @@ onBeforeUnmount(() => {
           <button class="ghost-btn tiny" type="button" @click="showMovieEditor = !showMovieEditor">
             {{ showMovieEditor ? '取消编辑' : '编辑' }}
           </button>
-          <button class="ghost-btn tiny" type="button" @click="showStats = !showStats">
+          <button class="ghost-btn tiny" type="button" @click="toggleMovieStats">
             {{ showStats ? '收起统计' : '查看统计' }}
           </button>
         </div>
@@ -924,26 +1021,10 @@ onBeforeUnmount(() => {
           <span class="status-dot success"></span>
         </li>
       </ul>
-
-      <div class="section-title" style="margin-top: 16px">
-        <div>
-          <h2>继续观看</h2>
-          <p>同步你的播放进度</p>
-        </div>
-      </div>
-      <ul class="list">
-        <li v-for="item in watching" :key="item.title" class="list-item">
-          <div>
-            <strong>{{ item.title }}</strong>
-            <p class="muted">{{ item.progress }}</p>
-          </div>
-          <span class="status-dot" :class="{ success: item.progress !== '待看' }"></span>
-        </li>
-      </ul>
     </div>
   </div>
 
-  <div v-if="addModal" class="detail-backdrop" @click.self="closeAdd">
+  <div v-if="addModal" class="detail-backdrop add-layer" @click.self="closeAdd">
     <div class="detail-modal" :style="detailModalStyle">
       <button class="close-btn" type="button" aria-label="关闭" @click="closeAdd">
         <span aria-hidden="true">×</span>
@@ -1029,7 +1110,7 @@ onBeforeUnmount(() => {
     </div>
   </div>
 
-  <div v-if="detailModal" class="detail-backdrop" @click.self="closeDetail">
+  <div v-if="detailModal" class="detail-backdrop detail-layer" @click.self="closeDetail">
     <div class="detail-modal pd-modal" :style="detailModalStyle">
       <button class="close-btn" type="button" aria-label="关闭" @click="closeDetail">
         <span aria-hidden="true">×</span>
@@ -1143,7 +1224,7 @@ onBeforeUnmount(() => {
     </div>
   </div>
 
-  <div v-if="listModalData" class="detail-backdrop" @click.self="closeList">
+  <div v-if="listModalData" class="detail-backdrop list-layer" @click.self="closeList">
     <div class="detail-modal list-modal" :style="detailModalStyle">
       <button class="close-btn" type="button" aria-label="关闭" @click="closeList">
         <span aria-hidden="true">×</span>
@@ -1152,11 +1233,19 @@ onBeforeUnmount(() => {
         <h3>{{ listModalData.title }}</h3>
         <p class="muted">共 {{ listModalData.items.length }} 项</p>
       </div>
+      <div class="list-search">
+        <input
+          v-model="listSearch"
+          type="search"
+          placeholder="搜索名字、出处或标签"
+          aria-label="搜索列表"
+        />
+      </div>
       <div class="list-modal-body">
         <template v-if="['actor', 'role', 'cos'].includes(listModalData.type)">
           <div class="avatar-grid">
             <div
-              v-for="entry in listModalData.items"
+              v-for="entry in filteredListItems"
               :key="entry.item.name"
               class="pill-card"
               :title="listModalData.type === 'actor' ? `演员：${entry.item.name}` : `角色：${entry.item.name} · 来自：${entry.item.from}`"
@@ -1195,11 +1284,12 @@ onBeforeUnmount(() => {
               </button>
             </div>
           </div>
+          <p v-if="!filteredListItems.length" class="muted">没有匹配的项目</p>
         </template>
         <template v-else>
           <ul class="list">
             <li
-              v-for="entry in listModalData.items"
+              v-for="entry in filteredListItems"
               :key="entry.item.title"
               class="list-item"
               :title="`${entry.item.title} · ${entry.item.genre} · ${entry.item.language} · ${entry.item.type}`"
@@ -1222,6 +1312,7 @@ onBeforeUnmount(() => {
               </div>
             </li>
           </ul>
+          <p v-if="!filteredListItems.length" class="muted">没有匹配的项目</p>
         </template>
       </div>
       <div class="resize-handle" @mousedown="startResize"></div>
@@ -1445,5 +1536,9 @@ onBeforeUnmount(() => {
   border: 1px solid rgba(15, 23, 42, 0.10);
   font-size: 12px;
   color: #334155;
+}
+
+.stats-anchor {
+  position: relative;
 }
 </style>
