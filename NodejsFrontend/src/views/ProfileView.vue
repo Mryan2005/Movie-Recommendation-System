@@ -1447,6 +1447,15 @@ onBeforeUnmount(() => {
   padding-bottom: 12px;
 }
 
+.collapsible-field {
+  margin-top: 8px;
+  margin-bottom: 8px;
+}
+
+.bar-chart {
+  padding: 8px;
+}
+
 .pd-section-sep {
   border-bottom: 1px solid rgba(15, 23, 42, 0.10);
 }
