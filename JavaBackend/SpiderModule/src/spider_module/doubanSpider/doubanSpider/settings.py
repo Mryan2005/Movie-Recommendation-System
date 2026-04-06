@@ -17,10 +17,10 @@ NEWSPIDER_MODULE = "doubanSpider.spiders"
 #USER_AGENT = "doubanSpider (+http://www.yourdomain.com)"
 
 # Obey robots.txt rules
-ROBOTSTXT_OBEY = True
+ROBOTSTXT_OBEY = False
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
-#CONCURRENT_REQUESTS = 32
+CONCURRENT_REQUESTS = 2
 
 # Configure a delay for requests for the same website (default: 0)
 # See https://docs.scrapy.org/en/latest/topics/settings.html#download-delay
@@ -54,7 +54,7 @@ DEFAULT_REQUEST_HEADERS = {
 # Enable or disable downloader middlewares
 # See https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 DOWNLOADER_MIDDLEWARES = {
-   "doubanSpider.middlewares.DoubanAdvancedMiddleware": 543,
+   "doubanSpider.middlewares.SeleniumMiddleware": 543,
    'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware': None,
 }
 

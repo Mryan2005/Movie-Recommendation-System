@@ -2,7 +2,6 @@
 #
 # See documentation in:
 # https://docs.scrapy.org/en/latest/topics/spider-middleware.html
-
 from scrapy import signals
 
 # useful for handling different item types with a single interface
@@ -10,7 +9,13 @@ from itemadapter import is_item, ItemAdapter
 
 import random
 import string
+import time
 from scrapy.http import HtmlResponse
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
+
 
 class DoubanspiderSpiderMiddleware:
     # Not all methods need to be defined. If a method is not defined,
@@ -106,43 +111,62 @@ class DoubanspiderDownloaderMiddleware:
         spider.logger.info("Spider opened: %s" % spider.name)
 
 
-class DoubanAdvancedMiddleware:
-    """
-    针对豆瓣 2025 反爬设计的进阶中间件
-    功能：动态 bid 生成、现代浏览器指纹模拟、Referer 自动补全
-    """
+class SeleniumMiddleware:
+    def __init__(self):
+        # 1. 配置 Chrome 参数
+        chrome_options = Options()
+        # chrome_options.add_argument('--headless')  # 调试时建议注释掉这行，能看到浏览器操作
+        chrome_options.add_argument('--disable-gpu')
+        chrome_options.add_argument('--no-sandbox')
+        chrome_options.add_argument('--window-size=1920,1080')
+
+        # 2. 移除 "受到自动测试软件控制" 的特征（反爬核心）
+        chrome_options.add_experimental_option("excludeSwitches", ["enable-automation"])
+        chrome_options.add_experimental_option('useAutomationExtension', False)
+
+        # 3. 初始化浏览器
+        self.driver = webdriver.Chrome(
+            service=Service(ChromeDriverManager().install()),
+            options=chrome_options
+        )
+
+        # 4. 隐藏 webdriver 特征属性
+        self.driver.execute_cdp_cmd("Page.addScriptToEvaluateOnNewDocument", {
+            "source": """
+                Object.defineProperty(navigator, 'webdriver', {
+                  get: () => undefined
+                })
+            """
+        })
 
     def process_request(self, request, spider):
-        # 1. 动态生成 bid (豆瓣用来追踪设备的关键 Cookie)
-        # 如果你没在 settings 里写死 Cookie，这里会随机生成一个，模拟新访客
-        if b'Cookie' not in request.headers:
-            random_bid = "".join(random.sample(string.ascii_letters + string.digits, 11))
-            request.headers['Cookie'] = f'bid={random_bid}'
+        # 只要处理 subject 或首页
+        spider.logger.info(f"Selenium 正在加载: {request.url}")
 
-        # 2. 模拟现代浏览器的 Client Hints (这是知乎文章提到的关键，防止 403)
-        request.headers['sec-ch-ua'] = '"Microsoft Edge";v="147", "Not.A/Brand";v="8", "Chromium";v="147"'
-        request.headers['sec-ch-ua-mobile'] = '?0'
-        request.headers['sec-ch-ua-platform'] = '"Windows"'
-        request.headers['sec-fetch-dest'] = 'document'
-        request.headers['sec-fetch-mode'] = 'navigate'
-        request.headers['sec-fetch-site'] = 'same-origin'
-        request.headers['sec-gpc'] = '1'
+        try:
+            self.driver.get(request.url)
+            # 模拟一点点滚动，让页面加载全
+            self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight/2);")
+            time.sleep(2)  # 等待加载，时间可以根据网速调整
 
-        # 3. 动态 Referer 策略
-        # 如果当前抓取的是电影详情页，把来源设置为豆瓣电影首页
-        if 'subject/' in request.url:
-            request.headers['Referer'] = 'https://movie.douban.com/'
+            # 如果遇到了验证码页面，这里会停住，你可以手动划一下
+            if "sec.douban.com" in self.driver.current_url:
+                spider.logger.warning("检测到验证码！请在浏览器界面手动处理...")
+                # 循环等待，直到你处理完验证码跳转回目标页
+                while "sec.douban.com" in self.driver.current_url:
+                    time.sleep(1)
 
-        return None
+            # 把 Selenium 渲染后的 HTML 返回给 Scrapy
+            content = self.driver.page_source.encode('utf-8')
+            return HtmlResponse(
+                self.driver.current_url,
+                body=content,
+                encoding='utf-8',
+                request=request
+            )
+        except Exception as e:
+            spider.logger.error(f"Selenium 访问出错: {str(e)}")
+            return None
 
-    def process_response(self, request, response, spider):
-        # 4. 检测是否触发了验证码重定向 (sec.douban.com)
-        if response.status in [302, 301] and "sec.douban.com" in response.headers.get('Location', b'').decode():
-            spider.logger.error(f"🛑 触发硬核验证！IP可能被暂时封禁。URL: {request.url}")
-            # 这里可以选择直接关闭爬虫，或者在此处集成代理切换逻辑
-
-        # 5. 如果遇到 403，说明 Header 模拟还是没过关或者频率太快
-        if response.status == 403:
-            spider.logger.warning(f"⚠️ 收到 403 响应，建议增加 DOWNLOAD_DELAY 或更换 Cookie/IP")
-
-        return response
+    def __del__(self):
+        self.driver.quit()
