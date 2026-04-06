@@ -23,30 +23,6 @@
 	</properties>
 
 	<dependencies>
-		<!-- 这里的依赖非常棒！
-		     提示：如果你已经在父工程的 <dependencyManagement> 里锁定了 MyBatis
-		     和 SpringDoc 的版本号，这里的 <version> 标签就可以删掉啦，
-		     让风从父工程把版本号吹过来，这样以后升级只改父工程就行。 -->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-batch</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-security</artifactId>
-		</dependency>
-		<!-- ... 其他依赖保持不变，篇幅原因我省略了一点，你保留原样即可 ... -->
-		<dependency>
-			<groupId>org.mybatis.spring.boot</groupId>
-			<artifactId>mybatis-spring-boot-starter</artifactId>
-			<version>4.0.1</version> <!-- 建议挪到父工程管理 -->
-		</dependency>
-		<dependency>
-			<groupId>org.springdoc</groupId>
-			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-			<version>3.0.2</version> <!-- 建议挪到父工程管理 -->
-		</dependency>
-        <!-- ... 省略其他测试包和运行包 ... -->
 	</dependencies>
 
 	<build>

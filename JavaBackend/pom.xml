@@ -75,6 +75,11 @@
 				<artifactId>mybatis-spring-boot-starter</artifactId>
 				<version>${mybatis-spring.version}</version>
 			</dependency>
+			 <dependency>
+            <groupId>black.ninia</groupId>
+            <artifactId>jep</artifactId>
+            <version>4.2.2</version>
+        </dependency>
 			<dependency>
 				<groupId>org.springframework.ai</groupId>
 				<artifactId>spring-ai-starter-model-openai</artifactId>
