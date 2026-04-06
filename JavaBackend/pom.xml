@@ -2,72 +2,40 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
+
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>3.5.7</version>
-		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>top.mryan2005.template</groupId>
+
+	<!-- 【魔法关键 0：定义多模块父工程】 -->
+	<modules>
+		<module>PortalModule</module>
+		<module>SpiderModule</module>
+		<module>RecommendationModule</module>
+		<module>adminModule</module>
+	</modules>
+
+	<groupId>top.movie.recommendation</groupId>
 	<artifactId>javabackend</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>JavaBackend</name>
-	<description>JavaBackend</description>
-	<url/>
-	<licenses>
-		<license/>
-	</licenses>
-	<developers>
-		<developer/>
-	</developers>
-	<scm>
-		<connection/>
-		<developerConnection/>
-		<tag/>
-		<url/>
-	</scm>
+	<description>JavaBackend - 多模块父工程</description>
+
+	<!-- 【魔法关键 1】必须声明为 pom 类型 -->
+	<packaging>pom</packaging>
+
+	<!-- 【留给未来】等你创建了子模块，这里会自动生成 <modules> 标签 -->
+
 	<properties>
 		<java.version>21</java.version>
 		<spring-ai.version>1.1.0</spring-ai.version>
+		<mybatis-spring.version>3.0.5</mybatis-spring.version>
 	</properties>
-	<dependencies>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-jpa</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-oauth2-authorization-server</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-oauth2-client</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-validation</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.mybatis.spring.boot</groupId>
-			<artifactId>mybatis-spring-boot-starter</artifactId>
-			<version>3.0.5</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.ai</groupId>
-			<artifactId>spring-ai-starter-model-openai</artifactId>
-		</dependency>
 
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-devtools</artifactId>
-			<scope>runtime</scope>
-			<optional>true</optional>
-		</dependency>
-		<dependency>
-			<groupId>com.microsoft.sqlserver</groupId>
-			<artifactId>mssql-jdbc</artifactId>
-			<scope>runtime</scope>
-		</dependency>
+	<!-- 【魔法关键 2】这里只放“所有子模块都一定需要”的依赖，比如 Lombok 和 测试 -->
+	<dependencies>
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
@@ -78,20 +46,12 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-		<dependency>
-			<groupId>org.mybatis.spring.boot</groupId>
-			<artifactId>mybatis-spring-boot-starter-test</artifactId>
-			<version>3.0.5</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.security</groupId>
-			<artifactId>spring-security-test</artifactId>
-			<scope>test</scope>
-		</dependency>
 	</dependencies>
+
+	<!-- 【魔法关键 3】在这个“兵器库”里统筹所有依赖的版本，子模块需要什么，就自己去拿（不用写版本号） -->
 	<dependencyManagement>
 		<dependencies>
+			<!-- 引入 Spring AI 的版本统筹 -->
 			<dependency>
 				<groupId>org.springframework.ai</groupId>
 				<artifactId>spring-ai-bom</artifactId>
@@ -99,11 +59,37 @@
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
+
+			<!-- 你的各种业务组件，在这里锁定版本 -->
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-starter-data-jpa</artifactId>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-starter-oauth2-authorization-server</artifactId>
+			</dependency>
+			<!-- 其他原来在 dependencies 里的包，都挪到这里来... -->
+			<dependency>
+				<groupId>org.mybatis.spring.boot</groupId>
+				<artifactId>mybatis-spring-boot-starter</artifactId>
+				<version>${mybatis-spring.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.ai</groupId>
+				<artifactId>spring-ai-starter-model-openai</artifactId>
+			</dependency>
+			<dependency>
+				<groupId>com.microsoft.sqlserver</groupId>
+				<artifactId>mssql-jdbc</artifactId>
+				<!-- 版本号由 Spring Boot 父级自动管理 -->
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 
 	<build>
 		<plugins>
+			<!-- 父工程只保留编译相关的通用插件 -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -116,18 +102,7 @@
 					</annotationProcessorPaths>
 				</configuration>
 			</plugin>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-				<configuration>
-					<excludes>
-						<exclude>
-							<groupId>org.projectlombok</groupId>
-							<artifactId>lombok</artifactId>
-						</exclude>
-					</excludes>
-				</configuration>
-			</plugin>
+			<!-- 记住！spring-boot-maven-plugin 已经被风吹走了，你要把它写到你最终的启动模块（比如 web 模块）里！ -->
 		</plugins>
 	</build>
 
