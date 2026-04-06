@@ -26,7 +26,10 @@ public class SpiderModuleApplication {
 
             // 2. 运行 Python 表达式并取回结果
             interp.exec("x = 1 + 2");
-            int x = (int) interp.getValue("x");
+
+            // 借助 Number 的包容性，化解这场冲突
+            int x = ((Number) interp.getValue("x")).intValue();
+
             System.out.println("Java got x = " + x);
 
             // 3. 执行多行 Python 逻辑
