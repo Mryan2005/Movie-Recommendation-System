@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<!-- 【魔法关键 1：指向你自己的父工程】 -->
+	<parent>
+		<groupId>top.movie.recommendation</groupId> <!-- 换成你父工程的 groupId -->
+		<artifactId>javabackend</artifactId>      <!-- 换成你父工程的 artifactId -->
+		<version>0.0.1-SNAPSHOT</version>         <!-- 换成你父工程的 version -->
+		<!-- 如果它就在父工程目录的下一级，这里的 relativePath 默认找 ../pom.xml 即可 -->
+		<relativePath>../pom.xml</relativePath>
+	</parent>
+
+	<!-- 【魔法关键 2：子模块只需要定义自己的 artifactId，其他继承父亲】 -->
+	<artifactId>adminModule</artifactId> <!-- 顺手帮你修饰了拼写哟 -->
+	<name>adminModule</name>
+	<description>Admin Module for Movie Recommendation</description>
+
+	<!-- properties 可以保留模块自己特有的，但 java.version 最好放到父工程里统一定义 -->
+	<properties>
+		<!-- 仅举例：如果你父工程没定义，可以留在这 -->
+	</properties>
+
+	<dependencies>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<!-- 生成文档的魔法插件，保留 -->
+			<plugin>
+				<groupId>org.asciidoctor</groupId>
+				<artifactId>asciidoctor-maven-plugin</artifactId>
+				<version>2.2.1</version>
+				<!-- ... 你的配置保持不变 ... -->
+			</plugin>
+
+			<!-- 【重要】这是启动类的王冠！因为它是一个要运行的模块，所以保留这个插件！ -->
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<excludes>
+						<exclude>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok</artifactId>
+						</exclude>
+					</excludes>
+				</configuration>
+			</plugin>
+
+			<!-- 编译插件也可以保留，或者放到父工程去统一管理 -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<!-- ... 你的配置保持不变 ... -->
+			</plugin>
+		</plugins>
+	</build>
+
+</project>

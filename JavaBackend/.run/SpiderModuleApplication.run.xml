@@ -1,0 +1,10 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="SpiderModuleApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+    <module name="SpiderModule" />
+    <option name="SPRING_BOOT_MAIN_CLASS" value="top.movie.recommendation.spidermodule.SpiderModuleApplication" />
+    <option name="VM_PARAMETERS" value="-Djava.library.path=$PROJECT_DIR$/SpiderModule/venv38/Lib/site-packages/jep -DPYTHONPATH= -Dpython.path=" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>
